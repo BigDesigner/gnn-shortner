@@ -1,80 +1,30 @@
-/* GNN Shortner - Native Theme Compatibility Mode */
+/* GNN Shortner - Zero Dependency Native CSS */
 
-.gnn-shortner-container {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 0; /* Temanın iç boşluklarına bırakıldı */
-    font-family: inherit;
-    color: inherit;
+.gnn-shortner-native-wrapper {
+    margin: 1em 0;
 }
 
-.gnn-shortner-header {
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.gnn-shortner-header h2 {
-    margin: 0 0 10px 0;
-    font-size: 1.5em;
-    color: inherit;
-}
-
-.gnn-shortner-header p {
-    margin: 0;
-    opacity: 0.8;
-    font-size: 0.9em;
-}
-
-/* Form Layout */
-#gnn-shortner-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.gnn-input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.gnn-input-group label {
-    font-weight: 600;
-    font-size: 0.9em;
-}
-
-/* Temanın kendi input stillerini kullan */
-.gnn-shortner-container input[type="url"],
-.gnn-shortner-container input[type="text"] {
-    width: 100%;
-    /* Özel stil kaldırıldı, tema ne verirse o */
-}
-
-/* Temanın kendi buton stilini kullan */
-/* WordPress 'button' class'ı eklenerek temanın genel stillerini tetikleriz */
-.gnn-shortner-container button[type="submit"] {
-    cursor: pointer;
-    width: auto;
-    align-self: flex-start; /* Temanın varsayılan buton davranışı */
-}
-
-/* Result Area */
 #gnn-result {
-    margin: 15px 0;
+    margin-bottom: 1em;
 }
 
 #gnn-result code {
     display: inline-block;
     padding: 10px;
-    background: rgba(0,0,0,0.05); /* Çok hafif bir ayrım */
-    border: 1px dashed rgba(0,0,0,0.2);
-    border-radius: 4px;
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
     cursor: pointer;
-    font-size: 1.1em;
+    font-family: monospace;
+    font-size: 1.2em;
     word-break: break-all;
 }
 
-/* Modal and Notifications - Minimal */
+.gnn-captcha-container {
+    margin: 1em 0;
+}
+
+/* Modal - Core Logic Only */
 .gnn-modal {
     display: none;
     position: fixed;
@@ -82,19 +32,21 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 9999;
+    background: rgba(0,0,0,0.7);
+    z-index: 99999;
 }
 
 .gnn-modal-content {
     background: #fff;
-    max-width: 350px;
+    max-width: 300px;
     margin: 15% auto;
     padding: 20px;
     border-radius: 4px;
     text-align: center;
+    color: #333;
 }
 
+/* Notifications - Toast */
 .gnn-notification {
     position: fixed;
     bottom: 20px;
@@ -104,12 +56,5 @@
     color: #fff;
     padding: 10px 20px;
     border-radius: 4px;
-    z-index: 10000;
-}
-
-/* Mobile */
-@media (max-width: 600px) {
-    .gnn-shortner-container {
-        padding: 10px;
-    }
+    z-index: 100000;
 }

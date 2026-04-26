@@ -1,38 +1,36 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function gnn_display_shortner_form() {
     ?>
-    <div class="gnn-shortner-container">
-        <div class="gnn-shortner-header">
-            <h2>GNN Shortner</h2>
-            <p>Paste your long URL below to create a clean, short link.</p>
-        </div>
-        
+    <div class="gnn-shortner-native-wrapper">
         <div id="gnn-result"></div>
 
         <form id="gnn-shortner-form" method="post">
-            <div class="gnn-input-group">
-                <label for="long_url">Destination URL</label>
-                <input type="url" name="long_url" id="long_url" placeholder="https://example.com/very-long-link..." required>
-            </div>
+            <p>
+                <label for="long_url"><?php _e('Destination URL', 'gnn-shortner'); ?></label><br>
+                <input type="url" name="long_url" id="long_url" required style="width:100%;">
+            </p>
 
-            <div class="gnn-input-group">
-                <label for="custom_short_url">Custom Slug (Optional)</label>
-                <input type="text" name="custom_short_url" id="custom_short_url" placeholder="e.g. my-link">
-            </div>
+            <p>
+                <label for="custom_short_url"><?php _e('Custom Slug (Optional)', 'gnn-shortner'); ?></label><br>
+                <input type="text" name="custom_short_url" id="custom_short_url" style="width:100%;">
+            </p>
 
-            <div class="gnn-captcha-wrapper">
+            <div class="gnn-captcha-container">
                 <div class="g-recaptcha" data-sitekey="<?php echo esc_attr(get_option('gnn_recaptcha_site_key')); ?>" data-theme="light"></div>
             </div>
 
-            <button type="submit" id="gnn-submit-btn" class="button button-primary">
-                <span class="btn-text">Shorten URL</span>
-                <span class="btn-loader" style="display:none;">Creating...</span>
-            </button>
+            <p>
+                <button type="submit" id="gnn-submit-btn" class="button button-primary">
+                    <span class="btn-text"><?php _e('Shorten URL', 'gnn-shortner'); ?></span>
+                    <span class="btn-loader" style="display:none;"><?php _e('Processing...', 'gnn-shortner'); ?></span>
+                </button>
+            </p>
         </form>
     </div>
     <?php
 }
-
 
 function gnn_process_shortner() {
     if (!check_ajax_referer('gnn_shortner_nonce', 'nonce', false)) {
@@ -59,7 +57,7 @@ function gnn_process_shortner() {
     }
 
     if (!filter_var($long_url, FILTER_VALIDATE_URL)) {
-        wp_send_json_error('Geçersiz URL biçimi.');
+        wp_send_json_error('Invalid URL format.');
     }
 
     global $wpdb;
@@ -67,11 +65,11 @@ function gnn_process_shortner() {
 
     $short_url = $custom_short_url ?: wp_generate_password(6, false);
     if ($wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $table_name WHERE short_url = %s", $short_url))) {
-        wp_send_json_error('Kısa URL zaten mevcut.');
+        wp_send_json_error('Short URL already exists.');
     }
 
     gnn_save_url($short_url, $long_url);
-    $full_short_url = home_url('/') . $short_url; // '/' ile kısa URL'yi birleştir
+    $full_short_url = home_url('/') . $short_url;
     wp_send_json_success(['short_url' => $full_short_url]);
 }
 add_action('wp_ajax_gnn_shortner', 'gnn_process_shortner');
