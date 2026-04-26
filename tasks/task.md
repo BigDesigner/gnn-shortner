@@ -14,7 +14,7 @@ This document tracks the evolution of the GNN Shortner WordPress plugin.
 - [x] **SEC-002:** Integrate Google reCAPTCHA v2 for spam protection.
 - [x] **SEC-003:** Implement `defined('ABSPATH') || exit;` guard in all PHP files.
 - [x] **SEC-004:** Apply comprehensive SQL preparation using `$wpdb->prepare()`.
-- [ ] **SEC-005:** Perform audit for sensitive data (API keys, local paths) to ensure repository integrity.
+- [x] **SEC-005:** Perform audit for sensitive data (API keys, local paths) to ensure repository integrity.
 
 ### PERF — Performance & Optimization
 - [x] **PERF-001:** Optimize database indexing for short URL lookups.
@@ -24,10 +24,17 @@ This document tracks the evolution of the GNN Shortner WordPress plugin.
 - [x] **UI-001:** Design "GNN Premium" Glassmorphism UI for shortcode form.
 - [x] **UI-002:** Implement Universal Theme Compatibility (Auto-adapts to Dark/Light modes).
 - [x] **UI-003:** Refine admin management interface with GNN aesthetics.
+- [x] **UI-004:** Refactor CSS to use theme variables/inheritance for maximum compatibility.
 
 ---
 
 ## 🚀 Release History
+
+### v1.1.0 — Premium & Universal Compatibility
+- [x] Implemented "GNN Premium" Glassmorphism UI system.
+- [x] Refactored CSS for universal theme compatibility (font/color inheritance).
+- [x] Completed full security audit and repo integrity check.
+- [x] Refactored updater and project identity.
 
 ### v1.0.5 — Documentation Standardization
 - [x] Full sync of all project documentation to GNN Shortner identity.
@@ -43,7 +50,6 @@ This document tracks the evolution of the GNN Shortner WordPress plugin.
 - [x] Basic admin UI.
 
 ## 📂 Backlog
-- [ ] **SEC-005:** Audit codebase for hardcoded secrets, local absolute paths, or credentials that should not be committed.
 - [ ] Implement short URL click statistics (future sprint).
 - [ ] Add QR code generation for shortened links.
 - [ ] No pending critical tasks. System is production ready.
