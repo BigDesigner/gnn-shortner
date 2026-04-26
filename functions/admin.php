@@ -9,7 +9,7 @@ function gnn_admin_page() {
         return;
     }
     ?>
-    <div class="wrap">
+    <div class="wrap gnn-admin-container">
         <h1>GNN Shortner - All URLs</h1>
         <table class="wp-list-table widefat fixed striped">
             <thead>
@@ -112,7 +112,7 @@ function gnn_settings_page() {
         echo '<div class="updated"><p>Settings saved.</p></div>';
     }
     ?>
-    <div class="wrap">
+    <div class="wrap gnn-admin-container">
         <h1>GNN Shortner Settings</h1>
         <form method="post">
             <?php wp_nonce_field('gnn_settings_action', 'gnn_settings_nonce'); ?>

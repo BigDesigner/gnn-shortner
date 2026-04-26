@@ -1,13 +1,7 @@
-/* GNN Shortner - Admin Style (Based on working reference) */
+/* GNN Shortner - Scoped Admin Style */
 
-.wrap {
-    margin: 20px;
-    font-size: 12px;
-    font-weight: bold;
-}
-
-/* Tablo stilleri - Örnekteki Widefat yapısı */
-.widefat.fixed {
+/* Sadece bizim eklenti sayfasında çalışan kurallar */
+.gnn-admin-container .widefat.fixed {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
@@ -17,7 +11,7 @@
     background-color: #f9f9f9;
 }
 
-.widefat.fixed thead th {
+.gnn-admin-container .widefat.fixed thead th {
     background-color: #4a4a4a;
     color: white;
     padding: 15px;
@@ -25,22 +19,22 @@
     font-weight: bold;
 }
 
-.widefat.fixed tbody td {
+.gnn-admin-container .widefat.fixed tbody td {
     padding: 15px;
     border-bottom: 1px solid #ffffff;
     color: #333;
 }
 
-.widefat.fixed tbody tr:nth-child(even) {
+.gnn-admin-container .widefat.fixed tbody tr:nth-child(even) {
     background-color: #e3e3e3;
 }
 
-.widefat.fixed tbody tr:hover {
+.gnn-admin-container .widefat.fixed tbody tr:hover {
     background-color: #cdcdcd;
 }
 
 /* Edit Form Area */
-#gnn-edit-form {
+.gnn-admin-container #gnn-edit-form {
     background: #fff;
     padding: 20px;
     border-radius: 8px;
@@ -49,7 +43,7 @@
 }
 
 /* Donate Icon */
-.gnn-donate-icon::after {
+.gnn-admin-container .gnn-donate-icon::after {
     content: '☕';
     margin-left: 3px;
 }

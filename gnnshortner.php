@@ -32,7 +32,11 @@ function gnn_enqueue_assets() {
     if (!is_admin()) {
         wp_enqueue_style('gnn-shortner-frontend', GNN_PLUGIN_URL . 'css/frontend.css', [], '1.2.0');
     } else {
-        wp_enqueue_style('gnn-shortner-admin', GNN_PLUGIN_URL . 'css/admin.css', [], '1.2.0');
+        $screen = get_current_screen();
+        // Sadece eklenti sayfalarındayken admin.css yükle
+        if (strpos($screen->id, 'gnn-shortner') !== false) {
+            wp_enqueue_style('gnn-shortner-admin', GNN_PLUGIN_URL . 'css/admin.css', [], '1.2.0');
+        }
     }
     
     wp_enqueue_script('gnn-shortner-js', GNN_PLUGIN_URL . 'js/gnn-shortner.js', ['jquery'], '1.2.0', true);
