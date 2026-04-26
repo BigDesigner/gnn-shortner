@@ -1,0 +1,96 @@
+/* GNN Shortner - Frontend Style (Based on working reference) */
+
+.gnn-shortner-fixed-wrapper {
+    width: 800px;
+    margin: 20px auto;
+    font-size: 14px;
+}
+
+#gnn-shortner-form {
+    margin: 20px 0;
+}
+
+/* Input stilleri - Örnekteki Search Box baz alındı */
+.gnn-form-row {
+    margin-bottom: 20px;
+}
+
+.gnn-form-row label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.gnn-form-row input[type="url"],
+.gnn-form-row input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    color: #333;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.gnn-form-row input:focus {
+    border-color: #6c757d;
+    outline: none;
+    box-shadow: 0 0 5px rgba(108, 117, 125, 0.5);
+}
+
+/* Buton Stilleri - Örnekteki Standartları Korur */
+.gnn-btn-fixed {
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+/* Sonuç Alanı - Örnekteki Bildirim Stiliyle Uyumlu */
+#gnn-result code {
+    display: block;
+    width: 100%;
+    background-color: #f2f2f2;
+    padding: 15px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+#gnn-result code:hover {
+    background-color: #ddd;
+}
+
+/* Bildirimler (Toast) */
+.gnn-notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px;
+    color: #fff;
+    background-color: #28a745;
+    border-radius: 5px;
+    z-index: 9999;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.gnn-captcha-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+/* Mobile responsive */
+@media (max-width: 820px) {
+    .gnn-shortner-fixed-wrapper {
+        width: 95%;
+    }
+}

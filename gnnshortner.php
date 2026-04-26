@@ -29,8 +29,13 @@ require_once GNN_PLUGIN_DIR . 'inc/updater.php';
 
 // Enqueue styles and scripts
 function gnn_enqueue_assets() {
-    wp_enqueue_style('gnn-shortner-css', GNN_PLUGIN_URL . 'css/gnn-shortner.css', [], '1.0');
-    wp_enqueue_script('gnn-shortner-js', GNN_PLUGIN_URL . 'js/gnn-shortner.js', ['jquery'], '1.0', true);
+    if (!is_admin()) {
+        wp_enqueue_style('gnn-shortner-frontend', GNN_PLUGIN_URL . 'css/frontend.css', [], '1.2.0');
+    } else {
+        wp_enqueue_style('gnn-shortner-admin', GNN_PLUGIN_URL . 'css/admin.css', [], '1.2.0');
+    }
+    
+    wp_enqueue_script('gnn-shortner-js', GNN_PLUGIN_URL . 'js/gnn-shortner.js', ['jquery'], '1.2.0', true);
     wp_localize_script('gnn-shortner-js', 'gnn_vars', [
         'ajax_url' => admin_url('admin-ajax.php'),
         'nonce'    => wp_create_nonce('gnn_shortner_nonce'),
