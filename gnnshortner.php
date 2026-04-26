@@ -94,3 +94,19 @@ function gnn_admin_menu() {
     );
 }
 add_action('admin_menu', 'gnn_admin_menu');
+
+/**
+ * Add plugin action links
+ */
+function gnn_shortner_plugin_links($links) {
+    $donate_link = '<a href="https://buymeacoffee.com/bigdesigner" target="_blank" style="font-weight:bold; color:#d63638;">' . esc_html__('Donate', 'gnn-shortner') . '</a>';
+    
+    $settings_link = '<a href="' . admin_url('admin.php?page=gnn-shortner-settings') . '">' . esc_html__('Settings', 'gnn-shortner') . '</a>';
+    
+    $update_url = wp_nonce_url(admin_url('plugins.php?gnn_shortner_check_update=1'), 'gnn_shortner_manual_update');
+    $update_link = '<a href="' . esc_url($update_url) . '">' . esc_html__('Check Updates', 'gnn-shortner') . '</a>';
+    
+    array_unshift($links, $donate_link, $settings_link, $update_link);
+    return $links;
+}
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'gnn_shortner_plugin_links');
