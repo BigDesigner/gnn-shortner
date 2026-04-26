@@ -3,7 +3,7 @@
 Plugin Name: GNN Shortner
 Plugin URI: https://www.bigdesigner.com
 Description: WordPress için kısa URL oluşturma eklentisi. Signature GNN Glassmorphism UI ve SEO dostu 301 yönlendirmesi ile.
-Version: 1.2.0
+Version: 1.3.0
 Author: BigDesigner
 Author URI: https://www.bigdesigner.com
 License: GPL2

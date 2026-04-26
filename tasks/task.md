@@ -30,6 +30,12 @@ This document tracks the evolution of the GNN Shortner WordPress plugin.
 
 ## 🚀 Release History
 
+### v1.3.0 — Stability & Native Integration
+- [x] Implemented "Zero Dependency" CSS architecture.
+- [x] Resolved Admin UI collisions via scoped CSS (.gnn-admin-container).
+- [x] Standardized frontend form width (800px) and button symmetry.
+- [x] Refactored CSS files (frontend.css / admin.css).
+
 ### v1.2.0 — Premium UI v2.0
 - [x] Massive CSS upgrade with Glassmorphism v2.0 and background glow.
 - [x] Added button loading states and interactive UI feedback.
