@@ -30,16 +30,16 @@ require_once GNN_PLUGIN_DIR . 'inc/updater.php';
 // Enqueue styles and scripts
 function gnn_enqueue_assets() {
     if (!is_admin()) {
-        wp_enqueue_style('gnn-shortner-frontend', GNN_PLUGIN_URL . 'css/frontend.css', [], '1.2.0');
+        wp_enqueue_style('gnn-shortner-frontend', GNN_PLUGIN_URL . 'css/frontend.css', [], '1.3.0');
     } else {
         $screen = get_current_screen();
         // Sadece eklenti sayfalarındayken admin.css yükle
         if (strpos($screen->id, 'gnn-shortner') !== false) {
-            wp_enqueue_style('gnn-shortner-admin', GNN_PLUGIN_URL . 'css/admin.css', [], '1.2.0');
+            wp_enqueue_style('gnn-shortner-admin', GNN_PLUGIN_URL . 'css/admin.css', [], '1.3.0');
         }
     }
     
-    wp_enqueue_script('gnn-shortner-js', GNN_PLUGIN_URL . 'js/gnn-shortner.js', ['jquery'], '1.2.0', true);
+    wp_enqueue_script('gnn-shortner-js', GNN_PLUGIN_URL . 'js/gnn-shortner.js', ['jquery'], '1.3.0', true);
     wp_localize_script('gnn-shortner-js', 'gnn_vars', [
         'ajax_url' => admin_url('admin-ajax.php'),
         'nonce'    => wp_create_nonce('gnn_shortner_nonce'),
