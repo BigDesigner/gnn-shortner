@@ -30,6 +30,11 @@ This document tracks the evolution of the GNN Shortner WordPress plugin.
 
 ## 🚀 Release History
 
+### v1.2.0 — Premium UI v2.0
+- [x] Massive CSS upgrade with Glassmorphism v2.0 and background glow.
+- [x] Added button loading states and interactive UI feedback.
+- [x] Implemented plugin action links (Donate, Settings, Updates).
+
 ### v1.1.0 — Premium & Universal Compatibility
 - [x] Implemented "GNN Premium" Glassmorphism UI system.
 - [x] Refactored CSS for universal theme compatibility (font/color inheritance).
