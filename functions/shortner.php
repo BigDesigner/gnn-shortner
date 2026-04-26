@@ -2,12 +2,32 @@
 function gnn_display_shortner_form() {
     ?>
     <div class="gnn-shortner-container">
+        <div class="gnn-shortner-header">
+            <h2>GNN Shortner</h2>
+            <p>Paste your long URL below to create a clean, short link.</p>
+        </div>
+        
         <div id="gnn-result"></div>
+
         <form id="gnn-shortner-form" method="post">
-            <input type="url" name="long_url" placeholder="Enter URL (http:// or https://)" required>
-            <input type="text" name="custom_short_url" placeholder="Custom Short URL (optional)">
-            <div class="g-recaptcha" data-sitekey="<?php echo esc_attr(get_option('gnn_recaptcha_site_key')); ?>" data-type="checkbox"></div>
-            <button type="submit">Shorten</button>
+            <div class="gnn-input-group">
+                <label for="long_url">Destination URL</label>
+                <input type="url" name="long_url" id="long_url" placeholder="https://example.com/very-long-link..." required>
+            </div>
+
+            <div class="gnn-input-group">
+                <label for="custom_short_url">Custom Slug (Optional)</label>
+                <input type="text" name="custom_short_url" id="custom_short_url" placeholder="e.g. my-link">
+            </div>
+
+            <div class="gnn-captcha-wrapper">
+                <div class="g-recaptcha" data-sitekey="<?php echo esc_attr(get_option('gnn_recaptcha_site_key')); ?>" data-theme="light"></div>
+            </div>
+
+            <button type="submit" id="gnn-submit-btn">
+                <span class="btn-text">Shorten URL</span>
+                <span class="btn-loader" style="display:none;">Creating...</span>
+            </button>
         </form>
     </div>
     <?php

@@ -6,6 +6,14 @@ jQuery(document).ready(function($) {
         formData.append('action', 'gnn_shortner');
         formData.append('nonce', gnn_vars.nonce);
 
+        var $btn = $('#gnn-submit-btn');
+        var $btnText = $btn.find('.btn-text');
+        var $btnLoader = $btn.find('.btn-loader');
+
+        $btn.prop('disabled', true);
+        $btnText.hide();
+        $btnLoader.show();
+
         $.ajax({
             url: gnn_vars.ajax_url,
             type: 'POST',
@@ -13,6 +21,9 @@ jQuery(document).ready(function($) {
             processData: false,
             contentType: false,
             success: function(response) {
+                $btn.prop('disabled', false);
+                $btnText.show();
+                $btnLoader.hide();
                 if (response.success) {
                     $('#gnn-result').html('<code>' + response.data.short_url + '</code>');
                 } else {
