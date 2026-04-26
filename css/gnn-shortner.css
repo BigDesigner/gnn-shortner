@@ -1,181 +1,80 @@
-/* GNN Shortner - Premium Glassmorphism Design System v2.0 */
-
-:root {
-    --gnn-glass-bg: rgba(255, 255, 255, 0.08);
-    --gnn-glass-border: rgba(255, 255, 255, 0.12);
-    --gnn-glass-shadow: rgba(0, 0, 0, 0.15);
-    --gnn-accent-color: #0073aa;
-    --gnn-accent-hover: #005d87;
-    --gnn-text-primary: inherit;
-    --gnn-text-secondary: rgba(128, 128, 128, 0.8);
-    --gnn-blur: blur(15px);
-    --gnn-radius: 18px;
-}
+/* GNN Shortner - Native Theme Compatibility Mode */
 
 .gnn-shortner-container {
-    max-width: 550px;
-    margin: 40px auto;
-    padding: 40px;
-    background: var(--gnn-glass-bg);
-    backdrop-filter: var(--gnn-blur);
-    -webkit-backdrop-filter: var(--gnn-blur);
-    border: 1px solid var(--gnn-glass-border);
-    border-radius: var(--gnn-radius);
-    box-shadow: 0 20px 50px 0 var(--gnn-glass-shadow);
-    text-align: left; /* Header için sola hizalı daha şık */
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-    color: var(--gnn-text-primary);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    box-sizing: border-box;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Subtle background glow */
-.gnn-shortner-container::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(0, 115, 170, 0.05) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: -1;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 0; /* Temanın iç boşluklarına bırakıldı */
+    font-family: inherit;
+    color: inherit;
 }
 
 .gnn-shortner-header {
-    text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    text-align: left;
 }
 
 .gnn-shortner-header h2 {
-    margin: 0 0 8px 0;
-    font-size: 28px;
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--gnn-accent-color), #00a0d2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    margin: 0 0 10px 0;
+    font-size: 1.5em;
+    color: inherit;
 }
 
 .gnn-shortner-header p {
     margin: 0;
-    font-size: 15px;
-    color: var(--gnn-text-secondary);
-    line-height: 1.5;
+    opacity: 0.8;
+    font-size: 0.9em;
+}
+
+/* Form Layout */
+#gnn-shortner-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .gnn-input-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 5px;
 }
 
 .gnn-input-group label {
-    font-size: 14px;
     font-weight: 600;
-    color: var(--gnn-text-primary);
-    opacity: 0.9;
+    font-size: 0.9em;
 }
 
+/* Temanın kendi input stillerini kullan */
 .gnn-shortner-container input[type="url"],
 .gnn-shortner-container input[type="text"] {
     width: 100%;
-    padding: 14px 18px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--gnn-glass-border);
-    border-radius: 10px;
-    color: inherit;
-    font-family: inherit;
-    font-size: 15px;
-    box-sizing: border-box;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Özel stil kaldırıldı, tema ne verirse o */
 }
 
-.gnn-shortner-container input:focus {
-    outline: none;
-    border-color: var(--gnn-accent-color);
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 0 4px rgba(0, 115, 170, 0.15);
-    transform: translateY(-1px);
-}
-
-.gnn-captcha-wrapper {
-    display: flex;
-    justify-content: center;
-    margin: 5px 0;
-}
-
+/* Temanın kendi buton stilini kullan */
+/* WordPress 'button' class'ı eklenerek temanın genel stillerini tetikleriz */
 .gnn-shortner-container button[type="submit"] {
-    width: 100%;
-    padding: 16px;
-    background: var(--gnn-accent-color);
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    font-size: 17px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 10px 20px rgba(0, 115, 170, 0.2);
+    width: auto;
+    align-self: flex-start; /* Temanın varsayılan buton davranışı */
 }
 
-.gnn-shortner-container button[type="submit"]:hover {
-    background: var(--gnn-accent-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 15px 30px rgba(0, 115, 170, 0.3);
-}
-
-.gnn-shortner-container button[type="submit"]:active {
-    transform: translateY(0);
-}
-
-/* Result Section Enhancement */
+/* Result Area */
 #gnn-result {
-    width: 100%;
+    margin: 15px 0;
 }
 
 #gnn-result code {
-    display: block;
-    padding: 20px;
-    background: rgba(0, 115, 170, 0.08);
-    border: 2px dashed var(--gnn-accent-color);
-    border-radius: 12px;
-    color: var(--gnn-accent-color);
-    font-size: 18px;
-    font-weight: 700;
-    text-align: center;
+    display: inline-block;
+    padding: 10px;
+    background: rgba(0,0,0,0.05); /* Çok hafif bir ayrım */
+    border: 1px dashed rgba(0,0,0,0.2);
+    border-radius: 4px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    font-size: 1.1em;
     word-break: break-all;
-    position: relative;
 }
 
-#gnn-result code::after {
-    content: 'Click to copy';
-    position: absolute;
-    top: -12px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--gnn-accent-color);
-    color: #fff;
-    padding: 2px 10px;
-    border-radius: 20px;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-#gnn-result code:hover {
-    background: rgba(0, 115, 170, 0.15);
-    border-style: solid;
-    transform: scale(1.02);
-}
-
-/* Modal Stilleri */
+/* Modal and Notifications - Minimal */
 .gnn-modal {
     display: none;
     position: fixed;
@@ -183,62 +82,34 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(8px);
-    z-index: 99999;
+    background: rgba(0,0,0,0.5);
+    z-index: 9999;
 }
 
 .gnn-modal-content {
-    background: rgba(255, 255, 255, 0.95);
-    width: 90%;
-    max-width: 380px;
+    background: #fff;
+    max-width: 350px;
     margin: 15% auto;
-    padding: 35px;
-    border-radius: 24px;
+    padding: 20px;
+    border-radius: 4px;
     text-align: center;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.4);
 }
 
-/* Notification (Toast) */
 .gnn-notification {
     position: fixed;
-    bottom: 40px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background: #27ae60;
+    background: #333;
     color: #fff;
-    padding: 14px 28px;
-    border-radius: 100px;
-    box-shadow: 0 15px 35px rgba(39, 174, 96, 0.4);
-    z-index: 100000;
-    font-weight: 600;
-    animation: gnnFadeUp 0.4s ease-out;
+    padding: 10px 20px;
+    border-radius: 4px;
+    z-index: 10000;
 }
 
-@keyframes gnnFadeUp {
-    from { opacity: 0; transform: translate(-50%, 20px); }
-    to { opacity: 1; transform: translate(-50%, 0); }
-}
-
-/* Dark Mode Overrides */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --gnn-glass-bg: rgba(20, 20, 20, 0.6);
-        --gnn-glass-border: rgba(255, 255, 255, 0.08);
-        --gnn-text-secondary: rgba(200, 200, 200, 0.6);
-    }
-    .gnn-modal-content {
-        background: #1a1a1a;
-        color: #fff;
-    }
-}
-
-/* Mobile Adjustments */
-@media (max-width: 500px) {
+/* Mobile */
+@media (max-width: 600px) {
     .gnn-shortner-container {
-        padding: 30px 20px;
-        margin: 20px 10px;
-        gap: 20px;
+        padding: 10px;
     }
-    .gnn-shortner-header h2 { font-size: 24px; }
 }

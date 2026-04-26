@@ -24,7 +24,7 @@ function gnn_display_shortner_form() {
                 <div class="g-recaptcha" data-sitekey="<?php echo esc_attr(get_option('gnn_recaptcha_site_key')); ?>" data-theme="light"></div>
             </div>
 
-            <button type="submit" id="gnn-submit-btn">
+            <button type="submit" id="gnn-submit-btn" class="button button-primary">
                 <span class="btn-text">Shorten URL</span>
                 <span class="btn-loader" style="display:none;">Creating...</span>
             </button>
