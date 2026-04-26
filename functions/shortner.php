@@ -2,25 +2,22 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 function gnn_display_shortner_form() {
+    ob_start();
     ?>
     <div class="gnn-shortner-fixed-wrapper">
         <div id="gnn-result"></div>
-
         <form id="gnn-shortner-form" method="post">
             <div class="gnn-form-row">
                 <label for="long_url"><?php _e('Destination URL', 'gnn-shortner'); ?></label>
                 <input type="url" name="long_url" id="long_url" placeholder="https://..." required>
             </div>
-
             <div class="gnn-form-row">
                 <label for="custom_short_url"><?php _e('Custom Slug (Optional)', 'gnn-shortner'); ?></label>
                 <input type="text" name="custom_short_url" id="custom_short_url" placeholder="my-link">
             </div>
-
-            <div class="gnn-form-row gnn-captcha-row">
+            <div class="gnn-captcha-row">
                 <div class="g-recaptcha" data-sitekey="<?php echo esc_attr(get_option('gnn_recaptcha_site_key')); ?>" data-theme="light"></div>
             </div>
-
             <div class="gnn-form-row">
                 <button type="submit" id="gnn-submit-btn" class="button button-primary gnn-btn-fixed">
                     <span class="btn-text"><?php _e('Shorten URL', 'gnn-shortner'); ?></span>
@@ -30,9 +27,11 @@ function gnn_display_shortner_form() {
         </form>
     </div>
     <?php
+    $output = ob_get_clean();
+    // Satır sonlarını ve fazla boşlukları sil (PRE etiketi içindeki boşlukları önlemek için)
+    echo preg_replace('/\s+/', ' ', $output);
 }
 
-// ... (rest of the file remains same)
 function gnn_process_shortner() {
     if (!check_ajax_referer('gnn_shortner_nonce', 'nonce', false)) {
         wp_send_json_error('Security check failed.');
