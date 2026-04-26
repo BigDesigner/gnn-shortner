@@ -1,0 +1,151 @@
+.gnn-shortner-container {
+    max-width: 600px;
+    margin: 0 auto; /* Sayfanın ortasına hizalar */
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    /* box-shadow: 0 2px 5px rgba(0,0,0,0.1); */
+    text-align: center;
+    display: grid; /* Grid yapısını etkinleştir */
+    grid-template-columns: 1fr; /* Varsayılan olarak tek sütun */
+    gap: 15px; /* Öğeler arasındaki boşluk (gap) */
+}
+
+/* Tema veya WordPress block stillerini geçersiz kıl */
+.wp-block-post-content .gnn-shortner-container,
+.is-layout-constrained .gnn-shortner-container {
+    margin: 0 auto !important; /* Sayfanın ortasına hizalar, tema stillerini geçersiz kıl */
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 15px !important;
+}
+
+.gnn-shortner-container h2 {
+    margin: 0;
+    padding: 0;
+    grid-column: 1 / -1; /* Başlık tüm sütunları kaplar */
+}
+
+.gnn-shortner-container form {
+    display: contents; /* Formu grid’in bir parçası yap */
+}
+
+.gnn-shortner-container input[type="url"],
+.gnn-shortner-container input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin: 0; /* Grid içinde margin kaldır */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    grid-column: 1 / -1; /* Her input tüm sütunları kaplar */
+}
+
+.gnn-shortner-container .g-recaptcha {
+    margin: 0; /* Grid içinde margin kaldır */
+    grid-column: 1 / -1; /* reCAPTCHA tüm sütunları kaplar */
+    justify-self: center; /* Yatayda ortala */
+}
+
+.gnn-shortner-container button[type="submit"] {
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto; /* Grid içinde margin kaldır, ortala */
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background: #0073aa;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    grid-column: 1 / -1; /* Buton tüm sütunları kaplar */
+    justify-self: center; /* Yatayda ortala */
+}
+
+.gnn-shortner-container button[type="submit"]:hover {
+    background: #005d87;
+}
+
+.gnn-shortner-container #gnn-result {
+    grid-column: 1 / -1; /* Sonuç bölümü tüm sütunları kaplar */
+}
+
+.gnn-shortner-container #gnn-result code {
+    display: block;
+    margin: 0 auto; /* Grid içinde margin kaldır, ortala */
+    background: #0073aa;
+    cursor: pointer;
+    width: 100%;
+    max-width: 100%;
+    color: #fff;
+}
+
+button {
+    background: #0073aa;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #005d87;
+}
+
+/* Responsive Grid */
+@media (max-width: 600px) {
+    .gnn-shortner-container {
+        padding: 10px;
+        gap: 10px; /* Küçük ekranlarda daha az boşluk */
+        margin: 0 auto; /* Küçük ekranlarda da ortala */
+    }
+
+    .gnn-shortner-container button[type="submit"] {
+        max-width: 150px;
+    }
+}
+
+/* Modal Stilleri */
+.gnn-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 9999;
+}
+
+.gnn-modal-content {
+    background: #fff;
+    width: 300px;
+    margin: 20% auto;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.gnn-modal-content .button {
+    margin: 0 10px;
+}
+
+/* Bildirim Stilleri */
+.gnn-notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #4CAF50;
+    color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 10000;
+    max-width: 300px;
+    word-wrap: break-word;
+    text-align: center;
+}
