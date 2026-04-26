@@ -3,35 +3,36 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 function gnn_display_shortner_form() {
     ?>
-    <div class="gnn-shortner-native-wrapper">
+    <div class="gnn-shortner-fixed-wrapper">
         <div id="gnn-result"></div>
 
         <form id="gnn-shortner-form" method="post">
-            <p>
-                <label for="long_url"><?php _e('Destination URL', 'gnn-shortner'); ?></label><br>
-                <input type="url" name="long_url" id="long_url" required style="width:100%;">
-            </p>
+            <div class="gnn-form-row">
+                <label for="long_url"><?php _e('Destination URL', 'gnn-shortner'); ?></label>
+                <input type="url" name="long_url" id="long_url" placeholder="https://..." required>
+            </div>
 
-            <p>
-                <label for="custom_short_url"><?php _e('Custom Slug (Optional)', 'gnn-shortner'); ?></label><br>
-                <input type="text" name="custom_short_url" id="custom_short_url" style="width:100%;">
-            </p>
+            <div class="gnn-form-row">
+                <label for="custom_short_url"><?php _e('Custom Slug (Optional)', 'gnn-shortner'); ?></label>
+                <input type="text" name="custom_short_url" id="custom_short_url" placeholder="my-link">
+            </div>
 
-            <div class="gnn-captcha-container">
+            <div class="gnn-form-row gnn-captcha-row">
                 <div class="g-recaptcha" data-sitekey="<?php echo esc_attr(get_option('gnn_recaptcha_site_key')); ?>" data-theme="light"></div>
             </div>
 
-            <p>
-                <button type="submit" id="gnn-submit-btn" class="button button-primary">
+            <div class="gnn-form-row">
+                <button type="submit" id="gnn-submit-btn" class="button button-primary gnn-btn-fixed">
                     <span class="btn-text"><?php _e('Shorten URL', 'gnn-shortner'); ?></span>
                     <span class="btn-loader" style="display:none;"><?php _e('Processing...', 'gnn-shortner'); ?></span>
                 </button>
-            </p>
+            </div>
         </form>
     </div>
     <?php
 }
 
+// ... (rest of the file remains same)
 function gnn_process_shortner() {
     if (!check_ajax_referer('gnn_shortner_nonce', 'nonce', false)) {
         wp_send_json_error('Security check failed.');
