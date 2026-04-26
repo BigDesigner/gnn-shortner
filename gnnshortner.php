@@ -24,6 +24,9 @@ require_once GNN_PLUGIN_DIR . 'functions/db.php';
 require_once GNN_PLUGIN_DIR . 'functions/shortner.php';
 require_once GNN_PLUGIN_DIR . 'functions/admin.php';
 
+// Include the GitHub updater
+require_once GNN_PLUGIN_DIR . 'inc/updater.php';
+
 // Enqueue styles and scripts
 function gnn_enqueue_assets() {
     wp_enqueue_style('gnn-shortner-css', GNN_PLUGIN_URL . 'css/gnn-shortner.css', [], '1.0');
