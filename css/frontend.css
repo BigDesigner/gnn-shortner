@@ -1,0 +1,371 @@
+/* ============================================================
+   GNN Shortner - Sleek Minimalist SaaS Frontend UI
+   Linear & Vercel Inspired Minimalist Design
+   ============================================================ */
+
+/* ─── Base Styles ─── */
+.gnn-shortner-fixed-wrapper {
+    max-width: 580px;
+    width: 100%;
+    margin: 40px auto;
+    padding: 36px;
+    border-radius: 8px;
+    box-shadow: var(--gnn-fe-shadow);
+    background: var(--gnn-fe-bg);
+    border: 1px solid var(--gnn-fe-border);
+    color: var(--gnn-fe-text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+#gnn-shortner-form {
+    margin: 0;
+}
+
+.gnn-form-row {
+    margin-bottom: 20px;
+}
+
+.gnn-form-row label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gnn-fe-text);
+    margin-bottom: 6px;
+}
+
+.gnn-form-row input[type="url"],
+.gnn-form-row input[type="text"],
+.gnn-form-row input[type="password"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--gnn-fe-border-input);
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--gnn-fe-text);
+    background: var(--gnn-fe-input-bg);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.gnn-form-row input[type="url"]::placeholder,
+.gnn-form-row input[type="text"]::placeholder,
+.gnn-form-row input[type="password"]::placeholder {
+    color: var(--gnn-fe-text-muted);
+    opacity: 0.8;
+}
+
+.gnn-form-row input:focus {
+    outline: none;
+    border-color: var(--gnn-fe-focus);
+    box-shadow: 0 0 0 3px var(--gnn-fe-focus-glow);
+}
+
+/* Captcha styling */
+.gnn-captcha-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+/* Submit Button - Solid Monochrome SaaS Style */
+.gnn-btn-fixed {
+    width: 100% !important;
+    padding: 12px 16px !important;
+    background: var(--gnn-fe-btn-bg) !important;
+    border: 1px solid var(--gnn-fe-btn-border) !important;
+    border-radius: 6px !important;
+    color: var(--gnn-fe-btn-text) !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    cursor: pointer;
+    box-shadow: var(--gnn-fe-btn-shadow) !important;
+    transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease !important;
+    height: auto !important;
+    line-height: 1.2 !important;
+    font-family: inherit !important;
+}
+
+.gnn-btn-fixed:hover {
+    background: var(--gnn-fe-btn-hover) !important;
+}
+
+.gnn-btn-fixed:active {
+    transform: scale(0.985) !important;
+}
+
+/* Loader */
+.gnn-btn-fixed .btn-loader {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.gnn-btn-fixed .btn-loader::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--gnn-fe-btn-loader-border);
+    border-top-color: var(--gnn-fe-btn-text);
+    border-radius: 50%;
+    animation: gnnSpin 0.6s linear infinite;
+}
+
+@keyframes gnnSpin {
+    to { transform: rotate(360deg); }
+}
+
+/* Result Area Code Block */
+#gnn-result {
+    margin-bottom: 20px;
+}
+
+#gnn-result code {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: var(--gnn-fe-code-bg);
+    border: 1px solid var(--gnn-fe-border);
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gnn-fe-code-text);
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+    word-break: break-all;
+    font-family: monospace;
+}
+
+#gnn-result code::after {
+    content: 'Copy';
+    font-size: 12px;
+    font-weight: 500;
+    background: var(--gnn-fe-btn-bg);
+    color: var(--gnn-fe-btn-text);
+    border: 1px solid var(--gnn-fe-btn-border);
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-left: 12px;
+    white-space: nowrap;
+    transition: background-color 0.15s ease;
+}
+
+#gnn-result code:hover {
+    background: var(--gnn-fe-code-bg-hover);
+    border-color: var(--gnn-fe-border-input);
+}
+
+#gnn-result code:hover::after {
+    background: var(--gnn-fe-btn-hover);
+}
+
+/* ─── Toast Notifications & Animations ─── */
+.gnn-toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--gnn-fe-btn-bg, #09090b);
+    color: var(--gnn-fe-btn-text, #ffffff);
+    border: 1px solid var(--gnn-fe-btn-border, #27272a);
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    z-index: 999999;
+    box-shadow: 0 4px 20px rgba(0,0,0,.15);
+    animation: gnnSlideUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    max-width: 320px;
+    font-family: inherit;
+}
+
+.gnn-toast.gnn-toast-success {
+    border-left: 3px solid #22c55e;
+}
+
+.gnn-toast.gnn-toast-error {
+    border-left: 3px solid #ef4444;
+}
+
+@keyframes gnnSlideUp {
+    from { opacity: 0; transform: translateY(16px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ============================================================
+   🎨 Color Schemes / Themes
+   ============================================================ */
+
+/* ─── LIGHT THEME TOKENS ─── */
+:root {
+    --gnn-light-bg:              #ffffff;
+    --gnn-light-border:          #e4e4e7;
+    --gnn-light-border-input:    #d4d4d8;
+    --gnn-light-text:            #09090b;
+    --gnn-light-text-muted:      #71717a;
+    --gnn-light-input-bg:        #ffffff;
+    --gnn-light-focus:           #09090b;
+    --gnn-light-focus-glow:      rgba(9, 9, 11, 0.05);
+    --gnn-light-btn-bg:          #09090b;
+    --gnn-light-btn-border:      #09090b;
+    --gnn-light-btn-text:        #ffffff;
+    --gnn-light-btn-hover:       #27272a;
+    --gnn-light-btn-shadow:      0 1px 2px rgba(0,0,0,0.05);
+    --gnn-light-btn-loader:      rgba(255, 255, 255, 0.2);
+    --gnn-light-code-bg:         #f4f4f5;
+    --gnn-light-code-bg-hover:   #e4e4e7;
+    --gnn-light-code-text:       #09090b;
+    --gnn-light-shadow:          0 1px 3px rgba(0,0,0,0.02), 0 8px 24px rgba(0,0,0,0.04);
+}
+
+/* ─── DARK THEME TOKENS ─── */
+:root {
+    --gnn-dark-bg:               #09090b;
+    --gnn-dark-border:           #27272a;
+    --gnn-dark-border-input:     #3f3f46;
+    --gnn-dark-text:             #fafafa;
+    --gnn-dark-text-muted:       #a1a1aa;
+    --gnn-dark-input-bg:         #09090b;
+    --gnn-dark-focus:            #fafafa;
+    --gnn-dark-focus-glow:       rgba(250, 250, 250, 0.08);
+    --gnn-dark-btn-bg:           #fafafa;
+    --gnn-dark-btn-border:       #fafafa;
+    --gnn-dark-btn-text:         #09090b;
+    --gnn-dark-btn-hover:        #f4f4f5;
+    --gnn-dark-btn-shadow:       0 1px 2px rgba(0,0,0,0.1);
+    --gnn-dark-btn-loader:       rgba(9, 9, 11, 0.2);
+    --gnn-dark-code-bg:          #18181b;
+    --gnn-dark-code-bg-hover:    #27272a;
+    --gnn-dark-code-text:        #fafafa;
+    --gnn-dark-shadow:           0 1px 3px rgba(0,0,0,0.2), 0 12px 30px rgba(0,0,0,0.4);
+}
+
+/* Apply light theme classes */
+.gnn-shortner-fixed-wrapper.gnn-theme-light {
+    --gnn-fe-bg:                 var(--gnn-light-bg);
+    --gnn-fe-border:             var(--gnn-light-border);
+    --gnn-fe-border-input:       var(--gnn-light-border-input);
+    --gnn-fe-text:               var(--gnn-light-text);
+    --gnn-fe-text-muted:         var(--gnn-light-text-muted);
+    --gnn-fe-input-bg:           var(--gnn-light-input-bg);
+    --gnn-fe-focus:              var(--gnn-light-focus);
+    --gnn-fe-focus-glow:         var(--gnn-light-focus-glow);
+    --gnn-fe-btn-bg:             var(--gnn-light-btn-bg);
+    --gnn-fe-btn-border:         var(--gnn-light-btn-border);
+    --gnn-fe-btn-text:           var(--gnn-light-btn-text);
+    --gnn-fe-btn-hover:          var(--gnn-light-btn-hover);
+    --gnn-fe-btn-shadow:         var(--gnn-light-btn-shadow);
+    --gnn-fe-btn-loader-border:  var(--gnn-light-btn-loader);
+    --gnn-fe-code-bg:            var(--gnn-light-code-bg);
+    --gnn-fe-code-bg-hover:      var(--gnn-light-code-bg-hover);
+    --gnn-fe-code-text:          var(--gnn-light-code-text);
+    --gnn-fe-shadow:             var(--gnn-light-shadow);
+}
+
+/* Apply dark theme classes */
+.gnn-shortner-fixed-wrapper.gnn-theme-dark {
+    --gnn-fe-bg:                 var(--gnn-dark-bg);
+    --gnn-fe-border:             var(--gnn-dark-border);
+    --gnn-fe-border-input:       var(--gnn-dark-border-input);
+    --gnn-fe-text:               var(--gnn-dark-text);
+    --gnn-fe-text-muted:         var(--gnn-dark-text-muted);
+    --gnn-fe-input-bg:           var(--gnn-dark-input-bg);
+    --gnn-fe-focus:              var(--gnn-dark-focus);
+    --gnn-fe-focus-glow:         var(--gnn-dark-focus-glow);
+    --gnn-fe-btn-bg:             var(--gnn-dark-btn-bg);
+    --gnn-fe-btn-border:         var(--gnn-dark-btn-border);
+    --gnn-fe-btn-text:           var(--gnn-dark-btn-text);
+    --gnn-fe-btn-hover:          var(--gnn-dark-btn-hover);
+    --gnn-fe-btn-shadow:         var(--gnn-dark-btn-shadow);
+    --gnn-fe-btn-loader-border:  var(--gnn-dark-btn-loader);
+    --gnn-fe-code-bg:            var(--gnn-dark-code-bg);
+    --gnn-fe-code-bg-hover:      var(--gnn-dark-code-bg-hover);
+    --gnn-fe-code-text:          var(--gnn-dark-code-text);
+    --gnn-fe-shadow:             var(--gnn-dark-shadow);
+}
+
+/* Apply auto preference mapping rules */
+.gnn-shortner-fixed-wrapper.gnn-theme-auto {
+    --gnn-fe-bg:                 var(--gnn-light-bg);
+    --gnn-fe-border:             var(--gnn-light-border);
+    --gnn-fe-border-input:       var(--gnn-light-border-input);
+    --gnn-fe-text:               var(--gnn-light-text);
+    --gnn-fe-text-muted:         var(--gnn-light-text-muted);
+    --gnn-fe-input-bg:           var(--gnn-light-input-bg);
+    --gnn-fe-focus:              var(--gnn-light-focus);
+    --gnn-fe-focus-glow:         var(--gnn-light-focus-glow);
+    --gnn-fe-btn-bg:             var(--gnn-light-btn-bg);
+    --gnn-fe-btn-border:         var(--gnn-light-btn-border);
+    --gnn-fe-btn-text:           var(--gnn-light-btn-text);
+    --gnn-fe-btn-hover:          var(--gnn-light-btn-hover);
+    --gnn-fe-btn-shadow:         var(--gnn-light-btn-shadow);
+    --gnn-fe-btn-loader-border:  var(--gnn-light-btn-loader);
+    --gnn-fe-code-bg:            var(--gnn-light-code-bg);
+    --gnn-fe-code-bg-hover:      var(--gnn-light-code-bg-hover);
+    --gnn-fe-code-text:          var(--gnn-light-code-text);
+    --gnn-fe-shadow:             var(--gnn-light-shadow);
+}
+
+/* Automatically switch to dark mode if browser preference is dark OR if parent body has common dark classes */
+@media (prefers-color-scheme: dark) {
+    .gnn-shortner-fixed-wrapper.gnn-theme-auto {
+        --gnn-fe-bg:                 var(--gnn-dark-bg);
+        --gnn-fe-border:             var(--gnn-dark-border);
+        --gnn-fe-border-input:       var(--gnn-dark-border-input);
+        --gnn-fe-text:               var(--gnn-dark-text);
+        --gnn-fe-text-muted:         var(--gnn-dark-text-muted);
+        --gnn-fe-input-bg:           var(--gnn-dark-input-bg);
+        --gnn-fe-focus:              var(--gnn-dark-focus);
+        --gnn-fe-focus-glow:         var(--gnn-dark-focus-glow);
+        --gnn-fe-btn-bg:             var(--gnn-dark-btn-bg);
+        --gnn-fe-btn-border:         var(--gnn-dark-btn-border);
+        --gnn-fe-btn-text:           var(--gnn-dark-btn-text);
+        --gnn-fe-btn-hover:          var(--gnn-dark-btn-hover);
+        --gnn-fe-btn-shadow:         var(--gnn-dark-btn-shadow);
+        --gnn-fe-btn-loader-border:  var(--gnn-dark-btn-loader);
+        --gnn-fe-code-bg:            var(--gnn-dark-code-bg);
+        --gnn-fe-code-bg-hover:      var(--gnn-dark-code-bg-hover);
+        --gnn-fe-code-text:          var(--gnn-dark-code-text);
+        --gnn-fe-shadow:             var(--gnn-dark-shadow);
+    }
+}
+
+body.dark .gnn-shortner-fixed-wrapper.gnn-theme-auto,
+body.dark-mode .gnn-shortner-fixed-wrapper.gnn-theme-auto,
+body.theme-dark .gnn-shortner-fixed-wrapper.gnn-theme-auto,
+body[data-theme="dark"] .gnn-shortner-fixed-wrapper.gnn-theme-auto,
+.dark .gnn-shortner-fixed-wrapper.gnn-theme-auto,
+.dark-mode .gnn-shortner-fixed-wrapper.gnn-theme-auto,
+.theme-dark .gnn-shortner-fixed-wrapper.gnn-theme-auto,
+[data-theme="dark"] .gnn-shortner-fixed-wrapper.gnn-theme-auto {
+    --gnn-fe-bg:                 var(--gnn-dark-bg);
+    --gnn-fe-border:             var(--gnn-dark-border);
+    --gnn-fe-border-input:       var(--gnn-dark-border-input);
+    --gnn-fe-text:               var(--gnn-dark-text);
+    --gnn-fe-text-muted:         var(--gnn-dark-text-muted);
+    --gnn-fe-input-bg:           var(--gnn-dark-input-bg);
+    --gnn-fe-focus:              var(--gnn-dark-focus);
+    --gnn-fe-focus-glow:         var(--gnn-dark-focus-glow);
+    --gnn-fe-btn-bg:             var(--gnn-dark-btn-bg);
+    --gnn-fe-btn-border:         var(--gnn-dark-btn-border);
+    --gnn-fe-btn-text:           var(--gnn-dark-btn-text);
+    --gnn-fe-btn-hover:          var(--gnn-dark-btn-hover);
+    --gnn-fe-btn-shadow:         var(--gnn-dark-btn-shadow);
+    --gnn-fe-btn-loader-border:  var(--gnn-dark-btn-loader);
+    --gnn-fe-code-bg:            var(--gnn-dark-code-bg);
+    --gnn-fe-code-bg-hover:      var(--gnn-dark-code-bg-hover);
+    --gnn-fe-code-text:          var(--gnn-dark-code-text);
+    --gnn-fe-shadow:             var(--gnn-dark-shadow);
+}
+
+@media (max-width: 620px) {
+    .gnn-shortner-fixed-wrapper {
+        margin: 20px auto;
+        padding: 24px;
+    }
+}
