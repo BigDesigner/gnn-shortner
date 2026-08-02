@@ -58,3 +58,12 @@ Every PHP function, global variable, and CSS class MUST be prefixed with `gnn_sh
 * **Atomic Commits:** Propose small, single-purpose commits.
 * **Message Standards:** Prefix with conventional commits (e.g., `feat(ui): ...`, `fix(security): ...`, `chore(config): ...`).
 * **Staging Approval:** Never stage or commit automatically in Interactive Mode.
+
+---
+
+## 7. GNN Product Family Admin Menu Registration
+* **Menu Position:** Must conform to the GNN Product Family Admin Menu Position Registry (ADR 0009).
+* **Bands:** Themes ('58.xyz'–'59.xyz'), Plugins ('78.xyz'–'79.xyz').
+* **Format:** Quoted string literal with 3-digit suffix (e.g., '79.102').
+* **Nesting:** Products with multiple screens must register ONE top-level menu and nest others.
+* **Registry Update:** Update the ADR if assigning a new position.
