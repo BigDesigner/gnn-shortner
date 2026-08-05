@@ -3,7 +3,7 @@
 Plugin Name: GNN Shortner
 Plugin URI: https://www.bigdesigner.com
 Description: WordPress için kısa URL oluşturma eklentisi. Signature GNN Glassmorphism UI ve SEO dostu 301 yönlendirmesi ile.
-Version: 1.5.7
+Version: 1.5.8
 Author: BigDesigner
 Author URI: https://www.bigdesigner.com
 License: GPL2
@@ -33,19 +33,19 @@ function gnn_enqueue_assets()
     $should_load_js = false;
 
     if (!is_admin()) {
-        wp_enqueue_style('gnn-shortner-frontend', GNN_PLUGIN_URL . 'css/frontend.css', [], '1.5.7');
+        wp_enqueue_style('gnn-shortner-frontend', GNN_PLUGIN_URL . 'css/frontend.css', [], '1.5.8');
         $should_load_js = true;
     } else {
         $screen = get_current_screen();
         // Sadece eklenti sayfalarındayken admin.css yükle
         if ($screen && strpos($screen->id, 'gnn-shortner') !== false) {
-            wp_enqueue_style('gnn-shortner-admin', GNN_PLUGIN_URL . 'css/admin.css', [], '1.5.7');
+            wp_enqueue_style('gnn-shortner-admin', GNN_PLUGIN_URL . 'css/admin.css', [], '1.5.8');
             $should_load_js = true;
         }
     }
 
     if ($should_load_js) {
-        wp_enqueue_script('gnn-shortner-js', GNN_PLUGIN_URL . 'js/gnn-shortner.js', ['jquery'], '1.5.7', true);
+        wp_enqueue_script('gnn-shortner-js', GNN_PLUGIN_URL . 'js/gnn-shortner.js', ['jquery'], '1.5.8', true);
         wp_localize_script('gnn-shortner-js', 'gnn_vars', [
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('gnn_shortner_nonce'),

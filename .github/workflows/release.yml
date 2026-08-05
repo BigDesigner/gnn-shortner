@@ -25,37 +25,20 @@ jobs:
           if [ -n "$VERSION_INPUT" ]; then
             VERSION="$VERSION_INPUT"
           else
-            VERSION=$(grep -m 1 "Version:" gnnshortner.php | awk '{print $NF}')
+            VERSION=$(grep -m 1 "Version:" gnn-shortner/gnnshortner.php | awk '{print $NF}')
           fi
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Create Build Directory and Zip
+      - name: Create Plugin Zip
         run: |
           # Define zip name
           ZIP_NAME="gnn-shortner-${{ env.VERSION }}.zip"
-          
-          # Create a temporary directory for clean build and a subfolder for the plugin
-          mkdir -p build/gnn-shortner
-          
-          # Use rsync to copy files, excluding the build directory itself and other dev files
-          rsync -av --exclude='build' \
-                    --exclude='.git' \
-                    --exclude='.github' \
-                    --exclude='.agents' \
-                    --exclude='.memory-bank' \
-                    --exclude='.specs' \
-                    --exclude='.tasks' \
-                    --exclude='.gitignore' \
-                    --exclude='*.md' \
-                    ./ build/gnn-shortner/
-          
-          # Explicitly include only CHANGELOG.md
-          cp CHANGELOG.md build/gnn-shortner/
-          
-          # Zip the build directory (this will include the gnn-shortner folder)
-          cd build && zip -r "../$ZIP_NAME" gnn-shortner && cd ..
-          
+
+          # The gnn-shortner/ folder already contains exactly the plugin files
+          # (code + CHANGELOG.md), so zip it directly with its folder as the root.
+          zip -r "$ZIP_NAME" gnn-shortner
+
           echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
 
       - name: Create GitHub Release

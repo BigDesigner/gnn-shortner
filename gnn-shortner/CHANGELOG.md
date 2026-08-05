@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.5.8] - 2026-08-05
+### Changed
+- **Repository Structure:** Moved the shippable plugin files into a dedicated `gnn-shortner/` subfolder, separating plugin code from development/meta directories. No user-facing changes — the packaged plugin contents are identical.
+- **Release Workflow:** Simplified the release build to zip the `gnn-shortner/` folder directly instead of rsync-copying with exclude rules.
+
 ## [1.5.7] - 2026-08-02
 ### Changed
 - **Admin Menu Registration:** Updated the top-level admin menu position to `'79.102'` to conform with the GNN Product Family Admin Menu Position Registry. This ensures a predictable placement within the WordPress admin dashboard across all GNN products.
