@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.9] - 2026-11-18
+### Security
+- **DOM XSS Prevention:** Replaced `.html()` injection in `gnn-shortner.js` with safe `document.createElement('code')` and `.textContent` assignment.
+- **PHP 8+ Cookie Type Safety:** Validated `$_COOKIE['gnn_unlocked']` as a non-empty string with `wp_unslash()` before `hash_equals()` to prevent `TypeError` crashes.
+- **External Links & Output Escaping:** Added `rel="noopener noreferrer"` on `target="_blank"` links, `wp_kses()` on admin notice HTML, and `wp_kses_post()` on pagination output.
+- **Updater URL Validation:** Added `get_package_url()` in `GNN_Shortner_Updater` to enforce HTTPS GitHub host allowlisting and `esc_url_raw()` sanitization.
+
+### Fixed
+- **Subfolder WordPress Support:** Stripped `home_url()` base path in `gnn_short_url_redirect()` and used `data-slug` attributes in admin edit modals so subfolder installs work reliably.
+- **Early Cache Headers:** Moved `nocache_headers()` to `template_redirect` for password-protected shortcode pages before output starts.
+- **Updater Reliability:** Fixed negative cache sentinel (`'error'` instead of `false`), `after_install()` `WP_Filesystem()` initialization with `$overwrite = true` and reactivation, and added `requires`/`tested`/`requires_php` metadata.
+- **Admin Stats & Error Handling:** Fixed total link count badge/card to display `$total_items` instead of current page row count, added `is_wp_error()` checks on reCAPTCHA `wp_remote_post()`, and added `isset()` guards on `$_POST`/`$_SERVER` accesses.
+
+### Changed
+- **WordPress 7.1 & PHP 7.4+ Compatibility:** Added `Requires at least: 6.2`, `Tested up to: 7.1`, `Requires PHP: 7.4`, `Domain Path: /languages`, `init` (priority 1) `load_plugin_textdomain()`, `languages/gnn-shortner.pot`, and `$wpdb->prepare('%i')` table identifier queries.
+- **Vanilla JS & Conditional Assets:** Removed jQuery dependency from `gnn-shortner.js` using `fetch()`, loaded frontend/reCAPTCHA assets only when `[gnn_shortner]` is present and needed.
+- **Accessibility & Responsive UI:** Added `aria-live="polite"`, keyboard copy (`Enter`/`Space`), modal focus management/trap, `:focus-visible` outlines, `-webkit-backdrop-filter`, and responsive admin table/stats styles.
+- **Release Workflow:** Added `php -l` syntax check step and CRLF stripping to `.github/workflows/release.yml`.
+
 ## [1.5.8] - 2026-08-05
 ### Changed
 - **Repository Structure:** Moved the shippable plugin files into a dedicated `gnn-shortner/` subfolder, separating plugin code from development/meta directories. No user-facing changes — the packaged plugin contents are identical.
