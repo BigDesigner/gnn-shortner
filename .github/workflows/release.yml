@@ -25,10 +25,14 @@ jobs:
           if [ -n "$VERSION_INPUT" ]; then
             VERSION="$VERSION_INPUT"
           else
-            VERSION=$(grep -m 1 "Version:" gnn-shortner/gnnshortner.php | awk '{print $NF}')
+            VERSION=$(grep -m 1 "Version:" gnn-shortner/gnnshortner.php | awk '{print $NF}' | tr -d '\r')
           fi
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: PHP Syntax Check
+        run: |
+          find gnn-shortner -name "*.php" -print0 | xargs -0 -n1 php -l
 
       - name: Create Plugin Zip
         run: |
@@ -49,6 +53,5 @@ jobs:
           files: ${{ env.ZIP_NAME }}
           draft: false
           prerelease: false
-          token: ${{ secrets.GITHUB_TOKEN }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

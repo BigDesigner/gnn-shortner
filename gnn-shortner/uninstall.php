@@ -21,8 +21,8 @@ delete_transient( 'gnn_shortner_github_update_check' );
 if ( 'yes' === get_option( 'gnn_delete_data_on_uninstall' ) ) {
     global $wpdb;
     $table_name = $wpdb->prefix . 'gnn_shorturls';
-    // Tablo adı $wpdb->prefix ile oluşturulur (kullanıcı girdisi değil, güvenli)
-    $wpdb->query( "DROP TABLE IF EXISTS `{$table_name}`" );
+    // Tablo adı $wpdb->prefix ile oluşturulur; WP 6.2+ %i ile hazırlanır
+    $wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $table_name ) );
 }
 
 delete_option( 'gnn_delete_data_on_uninstall' );

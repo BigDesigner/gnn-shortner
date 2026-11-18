@@ -57,10 +57,17 @@
     opacity: 0.8;
 }
 
-.gnn-form-row input:focus {
-    outline: none;
+.gnn-form-row input:focus-visible {
+    outline: 2px solid var(--gnn-fe-focus);
+    outline-offset: 2px;
     border-color: var(--gnn-fe-focus);
     box-shadow: 0 0 0 3px var(--gnn-fe-focus-glow);
+}
+
+.gnn-btn-fixed:focus-visible,
+#gnn-result code:focus-visible {
+    outline: 2px solid var(--gnn-fe-focus);
+    outline-offset: 2px;
 }
 
 /* Captcha styling */

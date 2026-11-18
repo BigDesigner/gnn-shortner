@@ -380,7 +380,11 @@
 .gnn-admin-container .gnn-modal-overlay {
     position: fixed;
     inset: 0;
+    min-height: 100dvh;
+    padding: 16px;
+    overflow-y: auto;
     background: rgba(15, 23, 42, 0.55);
+    -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
     z-index: 99999;
     display: flex;
@@ -506,11 +510,21 @@
     box-sizing: border-box;
 }
 
-.gnn-admin-container .gnn-field input:focus,
-.gnn-admin-container .gnn-field select:focus {
-    outline: none;
+.gnn-admin-container .gnn-field input:focus-visible,
+.gnn-admin-container .gnn-field select:focus-visible {
+    outline: 2px solid var(--gnn-primary);
+    outline-offset: 2px;
     border-color: var(--gnn-primary);
     box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.gnn-admin-container .gnn-btn-primary:focus-visible,
+.gnn-admin-container .gnn-btn-secondary:focus-visible,
+.gnn-admin-container .gnn-btn-danger:focus-visible,
+.gnn-admin-container .gnn-btn-icon:focus-visible,
+.gnn-admin-container .gnn-modal-close:focus-visible {
+    outline: 2px solid var(--gnn-primary);
+    outline-offset: 2px;
 }
 
 .gnn-admin-container .gnn-field-hint {
@@ -620,4 +634,28 @@
 .gnn-admin-container .notice-success {
     border-left-color: #22c55e !important;
     border-radius: 8px !important;
+}
+
+/* ─── Responsive Admin Layout ─── */
+.gnn-admin-container .gnn-table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 782px) {
+    .gnn-admin-container .gnn-admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .gnn-admin-container .gnn-stats-row {
+        grid-template-columns: 1fr;
+    }
+
+    .gnn-admin-container .gnn-url-table thead th,
+    .gnn-admin-container .gnn-url-table tbody td {
+        padding: 12px 14px;
+    }
 }

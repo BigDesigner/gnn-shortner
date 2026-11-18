@@ -66,12 +66,34 @@ class GNN_Shortner_Updater
     }
 
     /**
+     * Validate and sanitize a GitHub package/release URL.
+     */
+    private function get_package_url($url)
+    {
+        $sanitized = esc_url_raw((string) $url, array('https'));
+        if (empty($sanitized)) {
+            return '';
+        }
+
+        $host = strtolower((string) wp_parse_url($sanitized, PHP_URL_HOST));
+        $allowed_hosts = array('github.com', 'api.github.com', 'objects.githubusercontent.com', 'codeload.github.com');
+        if (!in_array($host, $allowed_hosts, true)) {
+            return '';
+        }
+
+        return $sanitized;
+    }
+
+    /**
      * Fetch the latest release data from GitHub API.
      */
     private function get_remote_release()
     {
         $cached = get_transient($this->transient_key);
-        if (false !== $cached) {
+        if ('error' === $cached) {
+            return false;
+        }
+        if (false !== $cached && is_object($cached) && !empty($cached->version)) {
             return $cached;
         }
 
@@ -87,38 +109,51 @@ class GNN_Shortner_Updater
         $response = wp_remote_get($url, $args);
 
         if (is_wp_error($response) || 200 !== wp_remote_retrieve_response_code($response)) {
-            set_transient($this->transient_key, false, 300); // Cache failure for 5 mins
+            set_transient($this->transient_key, 'error', 300); // Cache failure for 5 mins
             return false;
         }
 
         $body = json_decode(wp_remote_retrieve_body($response));
 
-        if (empty($body) || !isset($body->tag_name)) {
+        if (empty($body) || !is_object($body) || empty($body->tag_name)) {
+            set_transient($this->transient_key, 'error', 300);
             return false;
         }
 
-        $remote_version = ltrim($body->tag_name, 'v');
+        $remote_version = sanitize_text_field(ltrim((string) $body->tag_name, 'v'));
+        if (empty($remote_version)) {
+            set_transient($this->transient_key, 'error', 300);
+            return false;
+        }
+
         $download_url = '';
 
-        if (!empty($body->assets)) {
+        if (!empty($body->assets) && is_array($body->assets)) {
             foreach ($body->assets as $asset) {
-                if (strpos($asset->name, '.zip') !== false) {
-                    $download_url = $asset->browser_download_url;
-                    break;
+                if (!empty($asset->name) && !empty($asset->browser_download_url) && strpos($asset->name, '.zip') !== false) {
+                    $download_url = $this->get_package_url($asset->browser_download_url);
+                    if (!empty($download_url)) {
+                        break;
+                    }
                 }
             }
         }
 
+        if (empty($download_url) && !empty($body->zipball_url)) {
+            $download_url = $this->get_package_url($body->zipball_url);
+        }
+
         if (empty($download_url)) {
-            $download_url = $body->zipball_url;
+            set_transient($this->transient_key, 'error', 300);
+            return false;
         }
 
         $release_data = (object) array(
             'version'      => $remote_version,
             'download_url' => $download_url,
-            'changelog'    => isset($body->body) ? $body->body : '',
-            'published_at' => isset($body->published_at) ? $body->published_at : '',
-            'html_url'     => isset($body->html_url) ? $body->html_url : '',
+            'changelog'    => isset($body->body) ? (string) $body->body : '',
+            'published_at' => isset($body->published_at) ? sanitize_text_field((string) $body->published_at) : '',
+            'html_url'     => isset($body->html_url) ? $this->get_package_url($body->html_url) : '',
         );
 
         set_transient($this->transient_key, $release_data, $this->cache_duration);
@@ -176,6 +211,10 @@ class GNN_Shortner_Updater
             'version'       => $release->version,
             'author'        => 'BigDesigner',
             'homepage'      => 'https://www.bigdesigner.com',
+            'requires'      => '6.2',
+            'tested'        => '7.1',
+            'requires_php'  => '7.4',
+            'last_updated'  => $release->published_at,
             'download_link' => $release->download_url,
             'sections'      => array(
                 'description' => 'WordPress için kısa URL oluşturma eklentisi. Signature GNN Glassmorphism UI ve SEO dostu 301 yönlendirmesi ile.',
@@ -194,12 +233,23 @@ class GNN_Shortner_Updater
         }
 
         global $wp_filesystem;
+        if (empty($wp_filesystem)) {
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+            WP_Filesystem();
+        }
+
         $plugin_dir = WP_PLUGIN_DIR . '/gnn-shortner';
-        
+        $was_active = is_plugin_active($this->plugin_slug);
+
         // Ensure the directory is correctly named
-        if ($result['destination'] !== $plugin_dir) {
-            $wp_filesystem->move($result['destination'], $plugin_dir);
-            $result['destination'] = $plugin_dir;
+        if (!empty($wp_filesystem) && isset($result['destination']) && $result['destination'] !== $plugin_dir) {
+            if ($wp_filesystem->move($result['destination'], $plugin_dir, true)) {
+                $result['destination'] = $plugin_dir;
+            }
+        }
+
+        if ($was_active) {
+            activate_plugin($this->plugin_slug);
         }
 
         delete_transient($this->transient_key);

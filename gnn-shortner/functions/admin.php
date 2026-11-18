@@ -10,14 +10,14 @@ function gnn_admin_page() {
     $table_name = $wpdb->prefix . 'gnn_shorturls';
 
     // Get total number of records for pagination
-    $total_items = (int) $wpdb->get_var("SELECT COUNT(*) FROM $table_name");
+    $total_items = (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM %i', $table_name ) );
 
     $per_page = 50;
     $current_page = max(1, isset($_GET['paged']) ? absint($_GET['paged']) : 1);
     $offset = ($current_page - 1) * $per_page;
     $total_pages = ceil($total_items / $per_page);
 
-    $urls = $wpdb->get_results( $wpdb->prepare("SELECT * FROM $table_name ORDER BY created_at DESC LIMIT %d OFFSET %d", $per_page, $offset) );
+    $urls = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i ORDER BY created_at DESC LIMIT %d OFFSET %d', $table_name, $per_page, $offset ) );
     if ( $wpdb->last_error ) {
         echo '<div class="error"><p>Database error: ' . esc_html( $wpdb->last_error ) . '</p></div>';
         return;
@@ -41,7 +41,7 @@ function gnn_admin_page() {
                 </div>
             </div>
             <div class="gnn-admin-header-right">
-                <span class="gnn-badge"><?php echo esc_html( count( $urls ) ); ?> <?php esc_html_e( 'Links', 'gnn-shortner' ); ?></span>
+                <span class="gnn-badge"><?php echo esc_html( $total_items ); ?> <?php esc_html_e( 'Links', 'gnn-shortner' ); ?></span>
             </div>
         </div>
 
@@ -50,7 +50,7 @@ function gnn_admin_page() {
             <div class="gnn-stat-card">
                 <span class="dashicons dashicons-admin-links"></span>
                 <div>
-                    <span class="gnn-stat-number"><?php echo esc_html( count( $urls ) ); ?></span>
+                    <span class="gnn-stat-number"><?php echo esc_html( $total_items ); ?></span>
                     <span class="gnn-stat-label"><?php esc_html_e( 'Total URLs', 'gnn-shortner' ); ?></span>
                 </div>
             </div>
@@ -75,6 +75,7 @@ function gnn_admin_page() {
             <div class="gnn-table-header">
                 <h2><?php esc_html_e( 'All Short URLs', 'gnn-shortner' ); ?></h2>
             </div>
+            <div class="gnn-table-responsive">
             <table class="gnn-url-table">
                 <thead>
                     <tr>
@@ -87,9 +88,9 @@ function gnn_admin_page() {
                 <tbody>
                     <?php if ( ! empty( $urls ) && is_array( $urls ) ) : ?>
                         <?php foreach ( $urls as $url ) : ?>
-                            <tr data-id="<?php echo esc_attr( $url->id ); ?>">
+                            <tr data-id="<?php echo esc_attr( $url->id ); ?>" data-slug="<?php echo esc_attr( $url->short_url ); ?>">
                                 <td>
-                                    <a class="gnn-short-link" href="<?php echo esc_url( home_url( '/' ) . $url->short_url ); ?>" target="_blank">
+                                    <a class="gnn-short-link" href="<?php echo esc_url( home_url( '/' ) . $url->short_url ); ?>" target="_blank" rel="noopener noreferrer">
                                         <?php echo esc_html( home_url( '/' ) . $url->short_url ); ?>
                                     </a>
                                 </td>
@@ -100,10 +101,10 @@ function gnn_admin_page() {
                                     <?php echo esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $url->created_at ) ) ); ?>
                                 </td>
                                 <td class="gnn-actions">
-                                    <button class="gnn-btn-icon gnn-edit-url" data-id="<?php echo esc_attr( $url->id ); ?>" title="<?php esc_attr_e( 'Edit', 'gnn-shortner' ); ?>">
+                                    <button type="button" class="gnn-btn-icon gnn-edit-url" data-id="<?php echo esc_attr( $url->id ); ?>" title="<?php esc_attr_e( 'Edit', 'gnn-shortner' ); ?>" aria-label="<?php esc_attr_e( 'Edit', 'gnn-shortner' ); ?>">
                                         <span class="dashicons dashicons-edit"></span>
                                     </button>
-                                    <button class="gnn-btn-icon gnn-btn-danger gnn-delete-url" data-id="<?php echo esc_attr( $url->id ); ?>" title="<?php esc_attr_e( 'Delete', 'gnn-shortner' ); ?>">
+                                    <button type="button" class="gnn-btn-icon gnn-btn-danger gnn-delete-url" data-id="<?php echo esc_attr( $url->id ); ?>" title="<?php esc_attr_e( 'Delete', 'gnn-shortner' ); ?>" aria-label="<?php esc_attr_e( 'Delete', 'gnn-shortner' ); ?>">
                                         <span class="dashicons dashicons-trash"></span>
                                     </button>
                                 </td>
@@ -119,17 +120,20 @@ function gnn_admin_page() {
                     <?php endif; ?>
                 </tbody>
             </table>
+            </div>
             <?php if ( $total_pages > 1 ) : ?>
                 <div class="gnn-pagination">
                     <?php
-                    echo paginate_links( [
-                        'base'      => add_query_arg( 'paged', '%#%' ),
-                        'format'    => '',
-                        'prev_text' => __( '&laquo; Prev', 'gnn-shortner' ),
-                        'next_text' => __( 'Next &raquo;', 'gnn-shortner' ),
-                        'total'     => $total_pages,
-                        'current'   => $current_page,
-                    ] );
+                    echo wp_kses_post(
+                        paginate_links( [
+                            'base'      => add_query_arg( 'paged', '%#%' ),
+                            'format'    => '',
+                            'prev_text' => __( '&laquo; Prev', 'gnn-shortner' ),
+                            'next_text' => __( 'Next &raquo;', 'gnn-shortner' ),
+                            'total'     => $total_pages,
+                            'current'   => $current_page,
+                        ] )
+                    );
                     ?>
                 </div>
             <?php endif; ?>
@@ -140,7 +144,7 @@ function gnn_admin_page() {
             <div class="gnn-modal-box">
                 <div class="gnn-modal-header">
                     <h3><?php esc_html_e( 'Edit Short URL', 'gnn-shortner' ); ?></h3>
-                    <button class="gnn-modal-close" id="gnn-edit-close" aria-label="<?php esc_attr_e( 'Close', 'gnn-shortner' ); ?>">
+                    <button type="button" class="gnn-modal-close" id="gnn-edit-close" aria-label="<?php esc_attr_e( 'Close', 'gnn-shortner' ); ?>">
                         <span class="dashicons dashicons-no-alt"></span>
                     </button>
                 </div>
@@ -176,8 +180,8 @@ function gnn_admin_page() {
                     <p><?php esc_html_e( 'Are you sure you want to permanently delete this short URL? This action cannot be undone.', 'gnn-shortner' ); ?></p>
                 </div>
                 <div class="gnn-modal-footer">
-                    <button id="gnn-delete-no" class="gnn-btn-secondary"><?php esc_html_e( 'Cancel', 'gnn-shortner' ); ?></button>
-                    <button id="gnn-delete-yes" class="gnn-btn-danger"><?php esc_html_e( 'Yes, Delete', 'gnn-shortner' ); ?></button>
+                    <button type="button" id="gnn-delete-no" class="gnn-btn-secondary"><?php esc_html_e( 'Cancel', 'gnn-shortner' ); ?></button>
+                    <button type="button" id="gnn-delete-yes" class="gnn-btn-danger"><?php esc_html_e( 'Yes, Delete', 'gnn-shortner' ); ?></button>
                 </div>
             </div>
         </div>
@@ -197,7 +201,7 @@ function gnn_delete_url() {
 
     global $wpdb;
     $table_name = $wpdb->prefix . 'gnn_shorturls';
-    $id         = absint( $_POST['id'] );
+    $id         = isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0;
 
     if ( ! $id ) {
         wp_send_json_error( 'Invalid ID.' );
@@ -215,16 +219,18 @@ add_action( 'wp_ajax_gnn_delete_url', 'gnn_delete_url' );
 
 // AJAX handler for Edit
 function gnn_edit_url() {
-    check_ajax_referer( 'gnn_shortner_nonce', 'nonce' );
+    if ( ! check_ajax_referer( 'gnn_shortner_nonce', 'nonce', false ) ) {
+        wp_send_json_error( 'Nonce verification failed.' );
+    }
     if ( ! current_user_can( 'manage_options' ) ) {
         wp_send_json_error( 'Unauthorized.' );
     }
 
     global $wpdb;
     $table_name = $wpdb->prefix . 'gnn_shorturls';
-    $id         = absint( $_POST['id'] );
-    $short_url  = sanitize_text_field( wp_unslash( $_POST['short_url'] ) );
-    $long_url   = esc_url_raw( wp_unslash( $_POST['long_url'] ) );
+    $id         = isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0;
+    $short_url  = isset( $_POST['short_url'] ) ? sanitize_text_field( wp_unslash( $_POST['short_url'] ) ) : '';
+    $long_url   = isset( $_POST['long_url'] ) ? esc_url_raw( wp_unslash( $_POST['long_url'] ) ) : '';
 
     if ( ! $id ) {
         wp_send_json_error( 'Invalid ID.' );
@@ -251,7 +257,7 @@ function gnn_edit_url() {
         wp_send_json_error( 'This short URL already exists.' );
     }
 
-    $wpdb->update(
+    $updated = $wpdb->update(
         $table_name,
         [ 'short_url' => $short_url, 'long_url' => $long_url ],
         [ 'id' => $id ],
@@ -259,8 +265,13 @@ function gnn_edit_url() {
         [ '%d' ]
     );
 
+    if ( false === $updated ) {
+        wp_send_json_error( 'Failed to update URL.' );
+    }
+
     wp_send_json_success( [
         'short_url' => home_url( '/' ) . $short_url,
+        'slug'      => $short_url,
         'long_url'  => $long_url,
     ] );
 }
@@ -272,13 +283,13 @@ function gnn_settings_page() {
         wp_die( esc_html__( 'You do not have permission to view this page.', 'gnn-shortner' ) );
     }
 
-    if ( isset( $_POST['gnn_settings'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['gnn_settings_nonce'] ) ), 'gnn_settings_action' ) ) {
+    if ( isset( $_POST['gnn_settings'], $_POST['gnn_settings_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['gnn_settings_nonce'] ) ), 'gnn_settings_action' ) ) {
         $theme_mode = sanitize_text_field( wp_unslash( $_POST['frontend_theme_mode'] ?? 'auto' ) );
         if ( ! in_array( $theme_mode, [ 'auto', 'light', 'dark' ], true ) ) {
             $theme_mode = 'auto';
         }
-        update_option( 'gnn_recaptcha_site_key', sanitize_text_field( wp_unslash( $_POST['recaptcha_site_key'] ) ) );
-        update_option( 'gnn_recaptcha_secret_key', sanitize_text_field( wp_unslash( $_POST['recaptcha_secret_key'] ) ) );
+        update_option( 'gnn_recaptcha_site_key', isset( $_POST['recaptcha_site_key'] ) ? sanitize_text_field( wp_unslash( $_POST['recaptcha_site_key'] ) ) : '' );
+        update_option( 'gnn_recaptcha_secret_key', isset( $_POST['recaptcha_secret_key'] ) ? sanitize_text_field( wp_unslash( $_POST['recaptcha_secret_key'] ) ) : '' );
         update_option( 'gnn_frontend_theme_mode', $theme_mode );
 
         // Data retention on uninstall (opt-in)
