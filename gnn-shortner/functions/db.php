@@ -22,7 +22,7 @@ function gnn_create_tables() {
 function gnn_get_long_url( $short_url ) {
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'gnn_shorturls';
-	return $wpdb->get_var( $wpdb->prepare( "SELECT long_url FROM $table_name WHERE short_url = %s", $short_url ) );
+	return $wpdb->get_var( $wpdb->prepare( 'SELECT long_url FROM %i WHERE short_url = %s', $table_name, $short_url ) );
 }
 
 function gnn_save_url( $short_url, $long_url ) {

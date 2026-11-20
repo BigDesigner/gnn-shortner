@@ -141,18 +141,18 @@ function gnn_display_shortner_form() {
 
 function gnn_verify_password() {
     if (!check_ajax_referer('gnn_shortner_nonce', 'nonce', false)) {
-        wp_send_json_error('Security check failed.');
+        wp_send_json_error(__('Security check failed.', 'gnn-shortner'));
     }
 
     // IP tabanlı sabit pencere rate limit: 60 saniyede en fazla 10 istek
     $ip  = sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'] ?? ''));
     $key = 'gnn_pass_rl_' . md5($ip);
     if ( gnn_check_rate_limit( $key ) ) {
-        wp_send_json_error('Too many attempts. Please try again later.');
+        wp_send_json_error(__('Too many attempts. Please try again later.', 'gnn-shortner'));
     }
 
     // Parola yalnızca hash'lenip karşılaştırılır, hiç echo edilmez; sanitize entropiyi düşüreceğinden sadece unslash uygula
-    $password = isset($_POST['password']) ? wp_unslash($_POST['password']) : '';
+    $password = (isset($_POST['password']) && is_string($_POST['password'])) ? wp_unslash($_POST['password']) : '';
     $recaptcha_response = isset($_POST['g-recaptcha-response']) ? sanitize_text_field(wp_unslash($_POST['g-recaptcha-response'])) : '';
 
     // Verify reCAPTCHA
@@ -166,11 +166,11 @@ function gnn_verify_password() {
             ]
         ]);
         if (is_wp_error($response)) {
-            wp_send_json_error('reCAPTCHA verification failed.');
+            wp_send_json_error(__('reCAPTCHA verification failed.', 'gnn-shortner'));
         }
         $result = json_decode(wp_remote_retrieve_body($response));
         if (!$result || empty($result->success)) {
-            wp_send_json_error('reCAPTCHA verification failed.');
+            wp_send_json_error(__('reCAPTCHA verification failed.', 'gnn-shortner'));
         }
     }
 
@@ -186,13 +186,20 @@ function gnn_verify_password() {
         if ( ! $is_secure && isset( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) ) {
             $is_secure = 'https' === strtolower( sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) ) );
         }
-        // Set secure HttpOnly session cookie with root path for robustness across subfolders/admin-ajax
-        setcookie('gnn_unlocked', $expected_token, 0, '/', COOKIE_DOMAIN, $is_secure, true);
+        // Set secure HttpOnly SameSite=Lax session cookie with root path for robustness across subfolders/admin-ajax
+        setcookie('gnn_unlocked', $expected_token, [
+            'expires'  => 0,
+            'path'     => '/',
+            'domain'   => COOKIE_DOMAIN,
+            'secure'   => $is_secure,
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]);
         // Clear rate limit transient on successful verification
         delete_transient($key);
         wp_send_json_success();
     } else {
-        wp_send_json_error('Incorrect password.');
+        wp_send_json_error(__('Incorrect password.', 'gnn-shortner'));
     }
 }
 add_action('wp_ajax_gnn_verify_password', 'gnn_verify_password');
@@ -200,14 +207,14 @@ add_action('wp_ajax_nopriv_gnn_verify_password', 'gnn_verify_password');
 
 function gnn_process_shortner() {
     if (!check_ajax_referer('gnn_shortner_nonce', 'nonce', false)) {
-        wp_send_json_error('Security check failed.');
+        wp_send_json_error(__('Security check failed.', 'gnn-shortner'));
     }
 
     // IP tabanlı sabit pencere rate limit: 60 saniyede en fazla 10 istek
     $ip  = sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'] ?? ''));
     $key = 'gnn_rl_' . md5($ip);
     if ( gnn_check_rate_limit( $key ) ) {
-        wp_send_json_error('Too many requests. Please try again later.');
+        wp_send_json_error(__('Too many requests. Please try again later.', 'gnn-shortner'));
     }
 
     // Bypass check: if password is set, verify the cookie
@@ -218,7 +225,7 @@ function gnn_process_shortner() {
             ? wp_unslash( $_COOKIE['gnn_unlocked'] )
             : '';
         if ( '' === $cookie_token || ! hash_equals( $expected_token, $cookie_token ) ) {
-            wp_send_json_error( 'Access denied. Please enter the correct password.' );
+            wp_send_json_error( __('Access denied. Please enter the correct password.', 'gnn-shortner') );
         }
     } else {
         // Password is disabled: verify reCAPTCHA if keys are set
@@ -233,11 +240,11 @@ function gnn_process_shortner() {
                 ]
             ]);
             if (is_wp_error($response)) {
-                wp_send_json_error('reCAPTCHA verification failed.');
+                wp_send_json_error(__('reCAPTCHA verification failed.', 'gnn-shortner'));
             }
             $result = json_decode(wp_remote_retrieve_body($response));
             if (!$result || empty($result->success)) {
-                wp_send_json_error('reCAPTCHA verification failed.');
+                wp_send_json_error(__('reCAPTCHA verification failed.', 'gnn-shortner'));
             }
         }
     }
@@ -246,21 +253,21 @@ function gnn_process_shortner() {
     $custom_short_url = isset($_POST['custom_short_url']) ? sanitize_text_field(wp_unslash($_POST['custom_short_url'])) : '';
 
     // Force scheme validation on Destination URL
-    if (!filter_var($long_url, FILTER_VALIDATE_URL) || !in_array(parse_url($long_url, PHP_URL_SCHEME), ['http', 'https'], true)) {
-        wp_send_json_error('Invalid URL format. Only HTTP/HTTPS URLs are allowed.');
+    if (!filter_var($long_url, FILTER_VALIDATE_URL) || !in_array(wp_parse_url($long_url, PHP_URL_SCHEME), ['http', 'https'], true)) {
+        wp_send_json_error(__('Invalid URL format. Only HTTP/HTTPS URLs are allowed.', 'gnn-shortner'));
     }
 
     // Validate Custom Slug
     if ($custom_short_url) {
         // Enforce length and character whitelist
         if (strlen($custom_short_url) > 50 || !preg_match('/^[a-zA-Z0-9_\-]+$/', $custom_short_url)) {
-            wp_send_json_error('Invalid custom slug format. Use only letters, numbers, hyphens, and underscores (max 50 chars).');
+            wp_send_json_error(__('Invalid custom slug format. Use only letters, numbers, hyphens, and underscores (max 50 chars).', 'gnn-shortner'));
         }
 
         // Check against reserved slugs list
         $reserved = ['wp-admin', 'wp-login', 'wp-json', 'feed', 'sitemap', 'xmlrpc', 'wp-content', 'wp-includes', 'wp-cron', 'index.php', 'wp-login.php', 'robots.txt', 'favicon.ico'];
         if (in_array(strtolower($custom_short_url), $reserved, true)) {
-            wp_send_json_error('This custom slug is reserved. Please choose another.');
+            wp_send_json_error(__('This custom slug is reserved. Please choose another.', 'gnn-shortner'));
         }
     }
 
@@ -268,14 +275,14 @@ function gnn_process_shortner() {
     $table_name = $wpdb->prefix . 'gnn_shorturls';
 
     $short_url = $custom_short_url ?: wp_generate_password(6, false);
-    if ($wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $table_name WHERE short_url = %s", $short_url))) {
-        wp_send_json_error('Short URL already exists.');
+    if ($wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM %i WHERE short_url = %s', $table_name, $short_url))) {
+        wp_send_json_error(__('Short URL already exists.', 'gnn-shortner'));
     }
 
     // Insert başarısız olursa (ör. eşzamanlı istekte UNIQUE çakışması) yanlış link döndürme
     $inserted = gnn_save_url($short_url, $long_url);
     if ( ! $inserted ) {
-        wp_send_json_error('Short URL already exists.');
+        wp_send_json_error(__('Short URL already exists.', 'gnn-shortner'));
     }
 
     $full_short_url = home_url('/') . $short_url;

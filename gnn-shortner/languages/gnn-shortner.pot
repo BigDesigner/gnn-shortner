@@ -4,11 +4,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GNN Shortner 1.5.9\n"
 "Report-Msgid-Bugs-To: https://www.bigdesigner.com\n"
-"POT-Creation-Date: 2026-11-18 07:35+0300\n"
+"POT-Creation-Date: 2026-11-20 03:37+0300\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2026-11-18 07:35+0300\n"
+"PO-Revision-Date: 2026-11-20 03:37+0300\n"
 "Last-Translator: BigDesigner\n"
 "Language-Team: BigDesigner\n"
 "X-Domain: gnn-shortner\n"
@@ -55,4 +55,300 @@ msgstr ""
 
 #: gnnshortner.php
 msgid "Check Updates"
+msgstr ""
+
+#: functions/shortner.php
+msgid "Destination URL"
+msgstr ""
+
+#: functions/shortner.php
+msgid "Custom Slug (Optional)"
+msgstr ""
+
+#: functions/shortner.php
+msgid "Shorten URL"
+msgstr ""
+
+#: functions/shortner.php
+msgid "Processing..."
+msgstr ""
+
+#: functions/shortner.php
+msgid "Password"
+msgstr ""
+
+#: functions/shortner.php
+msgid "Login"
+msgstr ""
+
+#: functions/shortner.php inc/updater.php
+msgid "Security check failed."
+msgstr ""
+
+#: functions/shortner.php
+msgid "Too many attempts. Please try again later."
+msgstr ""
+
+#: functions/shortner.php
+msgid "reCAPTCHA verification failed."
+msgstr ""
+
+#: functions/shortner.php
+msgid "Incorrect password."
+msgstr ""
+
+#: functions/shortner.php
+msgid "Too many requests. Please try again later."
+msgstr ""
+
+#: functions/shortner.php
+msgid "Access denied. Please enter the correct password."
+msgstr ""
+
+#: functions/shortner.php functions/admin.php
+msgid "Invalid URL format. Only HTTP/HTTPS URLs are allowed."
+msgstr ""
+
+#: functions/shortner.php functions/admin.php
+msgid "Invalid custom slug format. Use only letters, numbers, hyphens, and underscores (max 50 chars)."
+msgstr ""
+
+#: functions/shortner.php functions/admin.php
+msgid "This custom slug is reserved. Please choose another."
+msgstr ""
+
+#: functions/shortner.php
+msgid "Short URL already exists."
+msgstr ""
+
+#: functions/shortner.php
+msgid "<strong>GNN Shortner:</strong> Google reCAPTCHA is not configured. The public URL shortening form is currently unprotected from bot abuse. Please configure it in the <a href=\"%s\">plugin settings</a>."
+msgstr ""
+
+#: functions/admin.php
+msgid "You do not have permission to view this page."
+msgstr ""
+
+#: functions/admin.php
+msgid "GNN Shortner"
+msgstr ""
+
+#: functions/admin.php
+msgid "Manage your short URLs"
+msgstr ""
+
+#: functions/admin.php
+msgid "Links"
+msgstr ""
+
+#: functions/admin.php
+msgid "Total URLs"
+msgstr ""
+
+#: functions/admin.php
+msgid "Redirect Type"
+msgstr ""
+
+#: functions/admin.php
+msgid "Plugin Version"
+msgstr ""
+
+#: functions/admin.php
+msgid "All Short URLs"
+msgstr ""
+
+#: functions/admin.php
+msgid "Short URL"
+msgstr ""
+
+#: functions/admin.php
+msgid "Created"
+msgstr ""
+
+#: functions/admin.php
+msgid "Actions"
+msgstr ""
+
+#: functions/admin.php
+msgid "Edit"
+msgstr ""
+
+#: functions/admin.php
+msgid "Delete"
+msgstr ""
+
+#: functions/admin.php
+msgid "No short URLs found. Use the shortcode [gnn_shortner] on any page to start creating links."
+msgstr ""
+
+#: functions/admin.php
+msgid "&laquo; Prev"
+msgstr ""
+
+#: functions/admin.php
+msgid "Next &raquo;"
+msgstr ""
+
+#: functions/admin.php
+msgid "Edit URL"
+msgstr ""
+
+#: functions/admin.php
+msgid "Edit Short URL"
+msgstr ""
+
+#: functions/admin.php
+msgid "Close"
+msgstr ""
+
+#: functions/admin.php
+msgid "Short URL Slug"
+msgstr ""
+
+#: functions/admin.php
+msgid "Cancel"
+msgstr ""
+
+#: functions/admin.php
+msgid "Save Changes"
+msgstr ""
+
+#: functions/admin.php
+msgid "Confirm Delete"
+msgstr ""
+
+#: functions/admin.php
+msgid "Are you sure you want to permanently delete this short URL? This action cannot be undone."
+msgstr ""
+
+#: functions/admin.php
+msgid "Yes, Delete"
+msgstr ""
+
+#: functions/admin.php
+msgid "Nonce verification failed."
+msgstr ""
+
+#: functions/admin.php
+msgid "Unauthorized."
+msgstr ""
+
+#: functions/admin.php
+msgid "Invalid ID."
+msgstr ""
+
+#: functions/admin.php
+msgid "URL deleted."
+msgstr ""
+
+#: functions/admin.php
+msgid "Failed to delete URL."
+msgstr ""
+
+#: functions/admin.php
+msgid "This short URL already exists."
+msgstr ""
+
+#: functions/admin.php
+msgid "Failed to update URL."
+msgstr ""
+
+#: functions/admin.php
+msgid "Settings saved."
+msgstr ""
+
+#: functions/admin.php
+msgid "GNN Shortner Settings"
+msgstr ""
+
+#: functions/admin.php
+msgid "Configure plugin options"
+msgstr ""
+
+#: functions/admin.php
+msgid "Google reCAPTCHA v2"
+msgstr ""
+
+#: functions/admin.php
+msgid "Enter your reCAPTCHA keys to protect the URL shortening form from bots."
+msgstr ""
+
+#: functions/admin.php
+msgid "Site Key"
+msgstr ""
+
+#: functions/admin.php
+msgid "Your reCAPTCHA Site Key from Google Console."
+msgstr ""
+
+#: functions/admin.php
+msgid "Secret Key"
+msgstr ""
+
+#: functions/admin.php
+msgid "Your reCAPTCHA Secret Key. Keep this private."
+msgstr ""
+
+#: functions/admin.php
+msgid "Theme Settings"
+msgstr ""
+
+#: functions/admin.php
+msgid "Select the design mode for the public frontend shortening form."
+msgstr ""
+
+#: functions/admin.php
+msgid "Frontend Theme Mode"
+msgstr ""
+
+#: functions/admin.php
+msgid "Auto (System / Theme Dependent)"
+msgstr ""
+
+#: functions/admin.php
+msgid "Force Light Mode"
+msgstr ""
+
+#: functions/admin.php
+msgid "Force Dark Mode"
+msgstr ""
+
+#: functions/admin.php
+msgid "Choose between Light Mode, Dark Mode, or Auto (detects user browser preference)."
+msgstr ""
+
+#: functions/admin.php
+msgid "Access Control"
+msgstr ""
+
+#: functions/admin.php
+msgid "Configure access protection for the frontend URL shortening form."
+msgstr ""
+
+#: functions/admin.php
+msgid "Frontend Form Password"
+msgstr ""
+
+#: functions/admin.php
+msgid "Leave empty for public access"
+msgstr ""
+
+#: functions/admin.php
+msgid "If set, users must enter this password to view and use the URL shortening form. Leave empty for public access."
+msgstr ""
+
+#: functions/admin.php
+msgid "Data Management"
+msgstr ""
+
+#: functions/admin.php
+msgid "Control what happens to your data when the plugin is deleted."
+msgstr ""
+
+#: functions/admin.php
+msgid "Delete all short links and settings when the plugin is uninstalled"
+msgstr ""
+
+#: functions/admin.php
+msgid "If unchecked (default), your short links are kept in the database even after uninstalling, so they remain if you reinstall."
 msgstr ""

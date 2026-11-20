@@ -177,15 +177,18 @@ class GNN_Shortner_Updater
 
         $local_version = $this->get_local_version();
 
+        $obj = new stdClass();
+        $obj->slug        = 'gnn-shortner';
+        $obj->plugin      = $this->plugin_slug;
+        $obj->new_version = $release->version;
+        $obj->url         = $release->html_url;
+        $obj->package     = $release->download_url;
+
         if (version_compare($release->version, $local_version, '>')) {
-            $obj = new stdClass();
-            $obj->slug        = 'gnn-shortner';
-            $obj->plugin      = $this->plugin_slug;
-            $obj->new_version = $release->version;
-            $obj->url         = $release->html_url;
-            $obj->package     = $release->download_url;
-            
             $transient->response[$this->plugin_slug] = $obj;
+            unset($transient->no_update[$this->plugin_slug]);
+        } else {
+            $transient->no_update[$this->plugin_slug] = $obj;
         }
 
         return $transient;
@@ -196,7 +199,7 @@ class GNN_Shortner_Updater
      */
     public function plugin_info($result, $action, $args)
     {
-        if ('plugin_information' !== $action || 'gnn-shortner' !== $args->slug) {
+        if ('plugin_information' !== $action || empty($args->slug) || 'gnn-shortner' !== $args->slug) {
             return $result;
         }
 
@@ -236,6 +239,10 @@ class GNN_Shortner_Updater
         if (empty($wp_filesystem)) {
             require_once ABSPATH . 'wp-admin/includes/file.php';
             WP_Filesystem();
+        }
+
+        if (!function_exists('is_plugin_active')) {
+            require_once ABSPATH . 'wp-admin/includes/plugin.php';
         }
 
         $plugin_dir = WP_PLUGIN_DIR . '/gnn-shortner';

@@ -156,13 +156,13 @@ function gnn_short_url_redirect()
     if (!empty($short_url) && preg_match('/^[a-zA-Z0-9_\-]+$/', $short_url)) {
         global $wpdb;
         $table_name = $wpdb->prefix . 'gnn_shorturls';
-        $result = $wpdb->get_row($wpdb->prepare("SELECT long_url FROM $table_name WHERE short_url = %s", $short_url));
+        $result = $wpdb->get_row($wpdb->prepare('SELECT long_url FROM %i WHERE short_url = %s', $table_name, $short_url));
 
         if ($result) {
             $long_url = esc_url_raw($result->long_url);
             
             // XSS ve open redirect önlemek için sadece http ve https protokollerine izin ver
-            if (filter_var($long_url, FILTER_VALIDATE_URL) && in_array(parse_url($long_url, PHP_URL_SCHEME), ['http', 'https'], true)) {
+            if (filter_var($long_url, FILTER_VALIDATE_URL) && in_array(wp_parse_url($long_url, PHP_URL_SCHEME), ['http', 'https'], true)) {
                 wp_redirect($long_url, 301);
                 exit;
             }
@@ -201,7 +201,7 @@ function gnn_shortner_plugin_links($links)
 {
     $donate_link = '<a href="https://buymeacoffee.com/bigdesigner" target="_blank" rel="noopener noreferrer" style="font-weight:bold; color:#d63638;">' . esc_html__('Donate', 'gnn-shortner') . '</a>';
 
-    $settings_link = '<a href="' . admin_url('admin.php?page=gnn-shortner-settings') . '">' . esc_html__('Settings', 'gnn-shortner') . '</a>';
+    $settings_link = '<a href="' . esc_url(admin_url('admin.php?page=gnn-shortner-settings')) . '">' . esc_html__('Settings', 'gnn-shortner') . '</a>';
 
     $update_url = wp_nonce_url(admin_url('plugins.php?gnn_shortner_check_update=1'), 'gnn_shortner_manual_update');
     $update_link = '<a href="' . esc_url($update_url) . '">' . esc_html__('Check Updates', 'gnn-shortner') . '</a>';

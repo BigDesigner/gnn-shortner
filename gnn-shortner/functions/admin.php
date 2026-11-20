@@ -193,10 +193,10 @@ function gnn_admin_page() {
 // AJAX handler for Delete
 function gnn_delete_url() {
     if ( ! check_ajax_referer( 'gnn_shortner_nonce', 'nonce', false ) ) {
-        wp_send_json_error( 'Nonce verification failed.' );
+        wp_send_json_error( __( 'Nonce verification failed.', 'gnn-shortner' ) );
     }
     if ( ! current_user_can( 'manage_options' ) ) {
-        wp_send_json_error( 'Unauthorized.' );
+        wp_send_json_error( __( 'Unauthorized.', 'gnn-shortner' ) );
     }
 
     global $wpdb;
@@ -204,15 +204,15 @@ function gnn_delete_url() {
     $id         = isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0;
 
     if ( ! $id ) {
-        wp_send_json_error( 'Invalid ID.' );
+        wp_send_json_error( __( 'Invalid ID.', 'gnn-shortner' ) );
     }
 
     $deleted = $wpdb->delete( $table_name, [ 'id' => $id ], [ '%d' ] );
 
     if ( $deleted ) {
-        wp_send_json_success( 'URL deleted.' );
+        wp_send_json_success( __( 'URL deleted.', 'gnn-shortner' ) );
     } else {
-        wp_send_json_error( 'Failed to delete URL.' );
+        wp_send_json_error( __( 'Failed to delete URL.', 'gnn-shortner' ) );
     }
 }
 add_action( 'wp_ajax_gnn_delete_url', 'gnn_delete_url' );
@@ -220,10 +220,10 @@ add_action( 'wp_ajax_gnn_delete_url', 'gnn_delete_url' );
 // AJAX handler for Edit
 function gnn_edit_url() {
     if ( ! check_ajax_referer( 'gnn_shortner_nonce', 'nonce', false ) ) {
-        wp_send_json_error( 'Nonce verification failed.' );
+        wp_send_json_error( __( 'Nonce verification failed.', 'gnn-shortner' ) );
     }
     if ( ! current_user_can( 'manage_options' ) ) {
-        wp_send_json_error( 'Unauthorized.' );
+        wp_send_json_error( __( 'Unauthorized.', 'gnn-shortner' ) );
     }
 
     global $wpdb;
@@ -233,28 +233,28 @@ function gnn_edit_url() {
     $long_url   = isset( $_POST['long_url'] ) ? esc_url_raw( wp_unslash( $_POST['long_url'] ) ) : '';
 
     if ( ! $id ) {
-        wp_send_json_error( 'Invalid ID.' );
+        wp_send_json_error( __( 'Invalid ID.', 'gnn-shortner' ) );
     }
 
-    if ( ! filter_var( $long_url, FILTER_VALIDATE_URL ) || ! in_array( parse_url( $long_url, PHP_URL_SCHEME ), [ 'http', 'https' ], true ) ) {
-        wp_send_json_error( 'Invalid URL format. Only HTTP/HTTPS URLs are allowed.' );
+    if ( ! filter_var( $long_url, FILTER_VALIDATE_URL ) || ! in_array( wp_parse_url( $long_url, PHP_URL_SCHEME ), [ 'http', 'https' ], true ) ) {
+        wp_send_json_error( __( 'Invalid URL format. Only HTTP/HTTPS URLs are allowed.', 'gnn-shortner' ) );
     }
 
     // Enforce length and character whitelist on short_url
     if ( strlen( $short_url ) > 50 || ! preg_match( '/^[a-zA-Z0-9_\-]+$/', $short_url ) ) {
-        wp_send_json_error( 'Invalid custom slug format. Use only letters, numbers, hyphens, and underscores (max 50 chars).' );
+        wp_send_json_error( __( 'Invalid custom slug format. Use only letters, numbers, hyphens, and underscores (max 50 chars).', 'gnn-shortner' ) );
     }
 
     // Check against reserved slugs list
     $reserved = [ 'wp-admin', 'wp-login', 'wp-json', 'feed', 'sitemap', 'xmlrpc', 'wp-content', 'wp-includes', 'wp-cron', 'index.php', 'wp-login.php', 'robots.txt', 'favicon.ico' ];
     if ( in_array( strtolower( $short_url ), $reserved, true ) ) {
-        wp_send_json_error( 'This custom slug is reserved. Please choose another.' );
+        wp_send_json_error( __( 'This custom slug is reserved. Please choose another.', 'gnn-shortner' ) );
     }
 
     // Check if duplicate exists for another row
-    $exists = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $table_name WHERE short_url = %s AND id != %d", $short_url, $id ) );
+    $exists = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM %i WHERE short_url = %s AND id != %d', $table_name, $short_url, $id ) );
     if ( $exists ) {
-        wp_send_json_error( 'This short URL already exists.' );
+        wp_send_json_error( __( 'This short URL already exists.', 'gnn-shortner' ) );
     }
 
     $updated = $wpdb->update(
@@ -266,7 +266,7 @@ function gnn_edit_url() {
     );
 
     if ( false === $updated ) {
-        wp_send_json_error( 'Failed to update URL.' );
+        wp_send_json_error( __( 'Failed to update URL.', 'gnn-shortner' ) );
     }
 
     wp_send_json_success( [
@@ -289,14 +289,21 @@ function gnn_settings_page() {
             $theme_mode = 'auto';
         }
         update_option( 'gnn_recaptcha_site_key', isset( $_POST['recaptcha_site_key'] ) ? sanitize_text_field( wp_unslash( $_POST['recaptcha_site_key'] ) ) : '' );
-        update_option( 'gnn_recaptcha_secret_key', isset( $_POST['recaptcha_secret_key'] ) ? sanitize_text_field( wp_unslash( $_POST['recaptcha_secret_key'] ) ) : '' );
+        $recaptcha_secret = ( isset( $_POST['recaptcha_secret_key'] ) && is_string( $_POST['recaptcha_secret_key'] ) )
+            ? sanitize_text_field( wp_unslash( $_POST['recaptcha_secret_key'] ) )
+            : '';
+        if ( '••••••••' !== $recaptcha_secret ) {
+            update_option( 'gnn_recaptcha_secret_key', $recaptcha_secret );
+        }
         update_option( 'gnn_frontend_theme_mode', $theme_mode );
 
         // Data retention on uninstall (opt-in)
         update_option( 'gnn_delete_data_on_uninstall', isset( $_POST['delete_data_on_uninstall'] ) ? 'yes' : 'no' );
 
         // Password hashing and storage
-        $frontend_password = isset( $_POST['frontend_password'] ) ? wp_unslash( $_POST['frontend_password'] ) : '';
+        $frontend_password = ( isset( $_POST['frontend_password'] ) && is_string( $_POST['frontend_password'] ) )
+            ? wp_unslash( $_POST['frontend_password'] )
+            : '';
         if ( $frontend_password !== '••••••••' ) {
             if ( empty( $frontend_password ) ) {
                 delete_option( 'gnn_frontend_password' );
@@ -340,7 +347,11 @@ function gnn_settings_page() {
 
                     <div class="gnn-field">
                         <label for="recaptcha_secret_key"><?php esc_html_e( 'Secret Key', 'gnn-shortner' ); ?></label>
-                        <input type="password" id="recaptcha_secret_key" name="recaptcha_secret_key" value="<?php echo esc_attr( get_option( 'gnn_recaptcha_secret_key' ) ); ?>" placeholder="6Lc...">
+                        <?php
+                        $has_secret   = ! empty( get_option( 'gnn_recaptcha_secret_key' ) );
+                        $secret_value = $has_secret ? '••••••••' : '';
+                        ?>
+                        <input type="password" id="recaptcha_secret_key" name="recaptcha_secret_key" value="<?php echo esc_attr( $secret_value ); ?>" placeholder="6Lc...">
                         <p class="gnn-field-hint"><?php esc_html_e( 'Your reCAPTCHA Secret Key. Keep this private.', 'gnn-shortner' ); ?></p>
                     </div>
                 </div>
