@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.10] - 2026-11-20
+### Security
+- **PHP 8+ Input Type Safety:** Added `is_string()` guards before `wp_unslash()` on password and reCAPTCHA secret POST fields to prevent array-injection `TypeError` crashes.
+- **Cookie Hardening:** Updated `gnn_unlocked` cookie to use PHP 7.4+ options array with explicit `SameSite=Lax`.
+- **SQL & Output Consistency:** Switched remaining table queries to `$wpdb->prepare('%i')`, wrapped Settings action link `admin_url()` in `esc_url()`, and masked stored reCAPTCHA secret key in the admin settings input.
+
+### Fixed
+- **Updater Safety:** Added `empty($args->slug)` guard in `plugin_info()`, `no_update` transient population in `check_for_update()`, and `function_exists('is_plugin_active')` guard in `after_install()`.
+- **URL Parsing Consistency:** Replaced remaining `parse_url()` calls with `wp_parse_url()`.
+
+### Changed
+- **i18n & Versioning:** Wrapped AJAX response messages in `__()`, completed `languages/gnn-shortner.pot` with all plugin strings, and added root `VERSION` file.
+
 ## [1.5.9] - 2026-11-18
 ### Security
 - **DOM XSS Prevention:** Replaced `.html()` injection in `gnn-shortner.js` with safe `document.createElement('code')` and `.textContent` assignment.

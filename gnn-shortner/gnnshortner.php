@@ -3,7 +3,7 @@
 Plugin Name: GNN Shortner
 Plugin URI: https://www.bigdesigner.com
 Description: WordPress için kısa URL oluşturma eklentisi. Signature GNN Glassmorphism UI ve SEO dostu 301 yönlendirmesi ile.
-Version: 1.5.9
+Version: 1.5.10
 Requires at least: 6.2
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -41,9 +41,9 @@ add_action('init', 'gnn_shortner_load_textdomain', 1);
 // Register styles and scripts; enqueue only where needed
 function gnn_enqueue_assets()
 {
-    wp_register_style('gnn-shortner-frontend', GNN_PLUGIN_URL . 'css/frontend.css', [], '1.5.9');
-    wp_register_style('gnn-shortner-admin', GNN_PLUGIN_URL . 'css/admin.css', [], '1.5.9');
-    wp_register_script('gnn-shortner-js', GNN_PLUGIN_URL . 'js/gnn-shortner.js', [], '1.5.9', true);
+    wp_register_style('gnn-shortner-frontend', GNN_PLUGIN_URL . 'css/frontend.css', [], '1.5.10');
+    wp_register_style('gnn-shortner-admin', GNN_PLUGIN_URL . 'css/admin.css', [], '1.5.10');
+    wp_register_script('gnn-shortner-js', GNN_PLUGIN_URL . 'js/gnn-shortner.js', [], '1.5.10', true);
 
     wp_localize_script('gnn-shortner-js', 'gnn_vars', [
         'ajax_url' => admin_url('admin-ajax.php'),
