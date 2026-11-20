@@ -3,59 +3,58 @@
 ## Current Environment State
 * **Current Mode:** Interactive
 * **Current Branch:** main
-* **Last Commit:** de8d703b99958183aded7a28478c878fb3cf8840 (bump: version 1.5.5 with page cache and cookie path fixes)
-* **Worktree Status:** Clean (all changes committed and pushed to origin/main)
+* **Last Commit:** `bd7503f73e2ca6314b2a83af6803db9625dd904d` (`chore(release): bump version to 1.5.10`)
+* **Latest Tag / Release:** `v1.5.10` (`gnn-shortner-1.5.10.zip`)
+* **Worktree Status:** Clean (plugin and workflow changes committed and pushed; only local `.agents/` and `.memory-bank/audits/` untracked if not committed).
 
 ---
 
 ## Session Summary
 
-### What Changed
-- **Frontend Password Protection (v1.5.4 & v1.5.5):** Added access control functionality to the frontend form. Site admins can set a password in the options page to lock form access. Passwords are saved securely using `wp_hash_password()`.
-- **Conditional reCAPTCHA Flow (v1.5.4):** Implemented a selective display strategy where reCAPTCHA is displayed only on the password screen (if keys are set) and hidden post-unlock to streamline the shortening UX.
-- **Bypass Prevention (v1.5.4):** Hardened the main shortening endpoint on the backend (`gnn_process_shortner()`) to verify the secure `HttpOnly` unlock session cookie, ensuring form bypass attempts are rejected.
-- **AJAX and Caching Reliability (v1.5.5):**
-  - Implemented `DONOTCACHEPAGE` and `nocache_headers()` on the shortcode page to prevent caching eklentisi collisions.
-  - Standardized the unlock cookie path to root (`/`) to prevent cross-path submission failures in `admin-ajax.php`.
-  - Fixed syntax error in javascript AJAX success handler causing CodeQL compilation issues.
-- **Sleek Minimalist SaaS Styling (v1.5.0):** Replaced legacy Glassmorphism design with a high-contrast monokrom SaaS aesthetic (Linear/Vercel inspired).
-- **Frontend Theme Settings Controller (v1.5.0):** Created a settings panel in WP Admin for administrators to choose between "Auto", "Force Light", or "Force Dark" mode for the frontend shortener form.
-- **Dynamic reCAPTCHA Theme Mode (v1.5.1):** Set up automatic Javascript detection on the frontend to load either light or dark Google reCAPTCHA v2 theme to match site themes.
-- **Security Auditing & Hardening (v1.5.2 & v1.5.3):**
-  - Implemented scheme whitelisting (`http`/`https`) on redirects to prevent XSS/open-redirect vectors.
-  - Added custom slug whitelist and reserved keyword check (e.g. `wp-admin`, `wp-login`) to prevent routing conflicts.
-  - Implemented transient IP-based rate limiting on the public shortener AJAX endpoint (max 10 submissions per 60 seconds).
-  - Added WP Admin dashboard notice when reCAPTCHA keys are missing.
-  - Implemented pagination (50 URLs per page) on the admin short URL table.
-  - Fixed toast notification XSS risk by utilizing jQuery `.text()` escaping.
-  - Implemented late-escaping and translation sanitization (`esc_html_e`) on all frontend variables.
-- **Task Pipeline Sync:** Synchronized `.tasks/pipeline.md` to reflect the completed security reviews and updated versioning to 1.5.5.
+### What Changed (v1.5.6 – v1.5.10)
+- **v1.5.10 (2026-11-20):**
+  - Added `is_string()` guards on password and reCAPTCHA secret POST fields (`functions/shortner.php`, `functions/admin.php`), `SameSite=Lax` cookie options array, `esc_url()` on Settings action link, and masked reCAPTCHA secret input.
+  - Switched remaining table queries to `$wpdb->prepare('%i')` and `parse_url()` calls to `wp_parse_url()`.
+  - Hardened `GNN_Shortner_Updater` with `empty($args->slug)` check, `$transient->no_update` population, and `function_exists('is_plugin_active')` guard.
+  - Wrapped AJAX messages in `__()`, completed `gnn-shortner/languages/gnn-shortner.pot`, and added root `VERSION` file.
+- **v1.5.9 (2026-11-18):**
+  - Added WP 7.1 / PHP 7.4+ headers, `init` (priority 1) `load_plugin_textdomain()`, conditional asset/reCAPTCHA loading, early `nocache_headers()`, and subfolder redirect/edit support.
+  - Replaced `.html()` DOM XSS risk with safe DOM node creation, converted `js/gnn-shortner.js` to Vanilla JS (zero jQuery), and added WCAG modal focus trap & `:focus-visible` styles.
+  - Hardened `inc/updater.php` (`get_package_url()`, `'error'` negative cache sentinel, `WP_Filesystem()` + `$overwrite = true` in `after_install()`).
+  - Added `php -l` syntax check and CRLF stripping to `.github/workflows/release.yml`.
+- **v1.5.7 – v1.5.8 (2026-08):**
+  - Assigned admin menu position `'79.102'` per ADR 0009 and moved shippable plugin files into `gnn-shortner/`.
 
 ### Touch Files
-- `gnnshortner.php`
-- `functions/shortner.php`
-- `functions/admin.php`
-- `js/gnn-shortner.js`
-- `css/frontend.css`
-- `CHANGELOG.md`
-- `.memory-bank/active-session.json`
-- `.tasks/pipeline.md`
-- `implementation_plan.md`
+- `VERSION`
+- `gnn-shortner/gnnshortner.php`
+- `gnn-shortner/uninstall.php`
+- `gnn-shortner/functions/db.php`
+- `gnn-shortner/functions/shortner.php`
+- `gnn-shortner/functions/admin.php`
+- `gnn-shortner/inc/updater.php`
+- `gnn-shortner/js/gnn-shortner.js`
+- `gnn-shortner/css/frontend.css`
+- `gnn-shortner/css/admin.css`
+- `gnn-shortner/languages/gnn-shortner.pot`
+- `gnn-shortner/CHANGELOG.md`
+- `.github/workflows/release.yml`
+- `.memory-bank/*`, `.tasks/*`
 
 ---
 
 ## Verification & Status
 
 ### Validation Status
-* **Syntax Checks:** Run `php -l` and tested logic. All PHP files have correct syntax.
-* **Security Scans:** Run `/sentinel-audit` with 0 warnings/vulnerabilities left.
-* **Git Status:** Clean worktree. 
+* **PHP Syntax Checks:** All 6 PHP files in `gnn-shortner/` passed `php -l` with 0 errors.
+* **JS Syntax Checks:** `gnn-shortner/js/gnn-shortner.js` passed `node --check` with 0 errors.
+* **GitHub Release:** `Manual Release` workflow (`44647561120`) succeeded and published `v1.5.10`.
 
 ### Known Failures / Warnings
-* None. All features are fully functional.
+* None.
 
 ---
 
 ## Recommended Next Actions
-1. Deploy v1.5.5 release to staging/production server.
-2. Collect feedback from visitors on the new SaaS theme and password access control system.
+1. Test `v1.5.10` (`gnn-shortner-1.5.10.zip`) in a live WordPress 7.1 environment.
+2. Add `tr_TR` `.po`/`.mo` translations if Turkish localization files are desired.

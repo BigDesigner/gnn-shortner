@@ -1,20 +1,13 @@
 # Bug List
 
-This document lists all known bugs, security alerts, typecheck issues, and runtime blockers.
+This document tracks all known bugs, security alerts, typecheck issues, and runtime blockers.
 
 ## Warnings & Environment Issues
 
-### 1. Dirty Worktree Warning
-* **Type:** Environment Warning
-* **Confidence:** Verified
-* **Status:** Open
-* **Description:** Uncommitted changes are present in the repository prior to Project Memory Bank initialization:
-  - Modified: [gnnshortner.php](file:///c:/Users/bigde/.antigravity/gnn-shortner/gnnshortner.php)
-  - Untracked: `.github/dependabot.yml`
-* **Suggested Next Action:** User to review changes and perform a clean commit or stash once memory bank structure migration is approved.
+*No active environment warnings or dirty worktree blockers. Repository structure migrated cleanly into `gnn-shortner/` (v1.5.8) and all releases through `v1.5.10` are tagged and published.*
 
 ---
 
 ## Code Defect & Security Log
 
-*No active bugs, security flags, or runtime failures have been reported. The core plugin codebase is currently stable and production-ready.*
+*No active bugs, security flags, or runtime failures have been reported as of `v1.5.10` (2026-11-20). All findings from the WP 7.1 / PHP 8.5 security and compatibility audits (DOM XSS, cookie/password `TypeError` guards, `SameSite=Lax`, subfolder redirect/edit support, `$wpdb->prepare('%i')`, updater URL allowlisting, and WCAG accessibility) have been resolved and verified.*
