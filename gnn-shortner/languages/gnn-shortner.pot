@@ -2,7 +2,7 @@
 # This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: GNN Shortner 1.5.10\n"
+"Project-Id-Version: GNN Shortner 1.5.11\n"
 "Report-Msgid-Bugs-To: https://www.bigdesigner.com\n"
 "POT-Creation-Date: 2026-11-20 03:37+0300\n"
 "MIME-Version: 1.0\n"
