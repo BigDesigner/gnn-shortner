@@ -25,3 +25,8 @@ Standardize `GNN_Shortner_Updater` (`gnn-shortner/inc/updater.php`) on the Unifi
 
 ## Verification
 - `php -l gnn-shortner/inc/updater.php` passed with zero syntax errors.
+
+
+## Amendment (2026-11-25): Disk-First Local Version Detection
+- **Root Cause:** Reading cached/in-memory version values inside `get_local_version()` could return the pre-upgrade version when WordPress fired `pre_set_site_transient_update_plugins` within the same PHP request right after overwriting plugin files, causing the update banner to persist until a second update run.
+- **Resolution:** `get_local_version()` now reads the live `Version` header directly from `WP_PLUGIN_DIR . '/' . $this->plugin_basename` via `clearstatcache( true, $main_file )` and `get_file_data()` first.
